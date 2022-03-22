@@ -1,23 +1,33 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCriancaDto } from './dto/create-crianca.dto';
 import { UpdateCriancaDto } from './dto/update-crianca.dto';
-
+import { Crianca } from './entities/crianca.entity';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class CriancaService {
-  create(createCriancaDto: CreateCriancaDto) {
-    return 'This action adds a new crianca';
+
+  constructor(
+    @InjectRepository(Crianca) private criancaRepository: Repository<Crianca>
+  ){}
+
+  async create(createCriancaDto: CreateCriancaDto) {
+    createCriancaDto.senha = await bcrypt.hash(createCriancaDto.senha, 10);
+    const kid = this.criancaRepository.create(createCriancaDto);
+    return this.criancaRepository.save(kid);
   }
 
   findAll() {
-    return `This action returns all crianca`;
+    return this.criancaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} crianca`;
+  findOne(cpf: string) {
+    return this.criancaRepository.findOne({cpf});
   }
 
   update(id: number, updateCriancaDto: UpdateCriancaDto) {
-    return `This action updates a #${id} crianca`;
+    return this.criancaRepository.update(id,updateCriancaDto);
   }
 
   remove(id: number) {

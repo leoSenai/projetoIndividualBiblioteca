@@ -19,7 +19,7 @@ export class CriancaController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.criancaService.findOne(+id);
+    return this.criancaService.findOne(id);
   }
 
   @Patch(':id')
