@@ -9,6 +9,19 @@ $('#usuario').on('focusout', function(event){
 $('#logar').on('click', function(event){
     event.preventDefault();
     let user = $('#usuario').val();
-    let password = $('#password').val();
-    window.location.href = "./pages/home.html";
+    let password = $('#senha').val();
+
+    console.log(user, password);
+
+    $.post('http://127.0.0.1:3000/login',{
+        username: +user,
+        password: password
+    }, function(res,details){
+        if(details == "success"){
+            localStorage.setItem("access_token",res.access_token);
+            window.location.href = "./pages/home.html";
+        }else{
+            toastr.error("Login ou Senha Invalida");
+        }
+    })
 });
