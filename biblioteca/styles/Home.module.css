@@ -1,0 +1,7 @@
+.body{
+    display: flex;
+    text-align: center !important;
+    padding-top:15px;
+    padding-bottom: 40px;
+    align-items: center !important;
+}

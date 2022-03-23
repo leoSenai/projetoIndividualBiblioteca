@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateLivroDto } from './dto/create-livro.dto';
 import { UpdateLivroDto } from './dto/update-livro.dto';
+import { Livro } from './entities/livro.entity';
 
 @Injectable()
 export class LivroService {
+  constructor(
+    @InjectRepository(Livro) private livroRepository: Repository<Livro>
+  ){}
+
   create(createLivroDto: CreateLivroDto) {
-    return 'This action adds a new livro';
+    const livro = this.livroRepository.create(createLivroDto);
+    return this.livroRepository.save(livro);
   }
 
   findAll() {
-    return `This action returns all livro`;
+    return this.livroRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} livro`;
+    return this.livroRepository.findOne(id);
   }
 
   update(id: number, updateLivroDto: UpdateLivroDto) {
-    return `This action updates a #${id} livro`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} livro`;
+    return this.livroRepository.update(id, updateLivroDto);
   }
 }

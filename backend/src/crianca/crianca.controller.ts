@@ -27,8 +27,4 @@ export class CriancaController {
     return this.criancaService.update(+id, updateCriancaDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.criancaService.remove(+id);
-  }
 }

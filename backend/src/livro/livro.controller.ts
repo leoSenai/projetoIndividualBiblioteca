@@ -26,9 +26,4 @@ export class LivroController {
   update(@Param('id') id: string, @Body() updateLivroDto: UpdateLivroDto) {
     return this.livroService.update(+id, updateLivroDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.livroService.remove(+id);
-  }
 }

@@ -26,11 +26,11 @@ export class CriancaService {
     return this.criancaRepository.findOne({cpf});
   }
 
-  update(id: number, updateCriancaDto: UpdateCriancaDto) {
+  async update(id: number, updateCriancaDto: UpdateCriancaDto) {
+    if(updateCriancaDto.senha != undefined){
+      updateCriancaDto.senha = await bcrypt.hash(updateCriancaDto.senha,10);
+    }
     return this.criancaRepository.update(id,updateCriancaDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} crianca`;
-  }
 }
