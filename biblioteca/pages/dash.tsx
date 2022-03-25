@@ -5,3 +5,4 @@ const Dash = () => {
         <Menu/>
     )
 }
+export default Dash

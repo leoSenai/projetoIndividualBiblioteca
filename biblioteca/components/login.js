@@ -2,9 +2,14 @@ import Image from 'next/image'
 import logo from '../public/arco-iris.png'
 import styles from '../styles/Home.module.css'
 import cookieCutter from 'cookie-cutter'
+import { useRouter } from 'next/router'
+import * as toastr from 'toastr'
+
 
 export default function Login() {
+    const router = useRouter();
 
+    let spinner = "spinner-border text-light"
     const handleSubmit = async (event) => {
         
         event.preventDefault();
@@ -28,6 +33,13 @@ export default function Login() {
         const response = await fetch('api/login',options);
         const result = await response.json();
         
+        if(response.status == 200){
+            cookieCutter.set("access_token", result.data);
+            router.push('/dash');
+        }else{
+            toastr.error("Login ou Senha Invalidos","Erro");
+        }
+
 
     }
 
@@ -46,7 +58,7 @@ export default function Login() {
                             <input type="password" className="form-control" id="senha" placeholder="Senha" required></input>
                             <label htmlFor="senha">Senha</label>
                         </div>
-                        <button className="mt-3 btn-primary btn-lg bg-dark rounded" id="logar" type="submit">Entrar</button>
+                        <button className="mt-3 btn-primary btn-lg bg-dark rounded {spinner}" id="logar" type="submit">Entrar</button>
                     </div>
                 </form>
             </div>

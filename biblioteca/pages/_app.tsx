@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/globals.css'
+import 'toastr/build/toastr.css'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 

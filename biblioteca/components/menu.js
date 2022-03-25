@@ -1,66 +1,56 @@
+import { Navbar, Container, Nav, NavDropdown, Row, Col } from "react-bootstrap"
 const Menu = () => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08"
-                aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse justify-content-md-center" id="navbar">
-                <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <a className="nav-link active" href="#">Home</a>
-                    </li>
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="emprestimos" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Cadastros
-                        </a>
-                        <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="emprestimos">
-                            <li><a className="dropdown-item" href="./criancas.html">Crianças</a></li>
-                            <li><a className="dropdown-item" href="#">Livros</a></li>
-                            <li><a className="dropdown-item" href="#">Usuários</a></li>
-                        </ul>
-                    </li>
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="emprestimos" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Emprestimos
-                        </a>
-                        <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="emprestimos">
-                            <li><a className="dropdown-item" href="#">Consultar</a></li>
-                            <li><a className="dropdown-item" href="#">Emprestar</a></li>
-                            <li><a className="dropdown-item" href="#">Renovar</a></li>
-                            <li><a className="dropdown-item" href="#">Devolver</a></li>
-                        </ul>
-                    </li>
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="emprestimos" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Multas
-                        </a>
-                        <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="emprestimos">
-                            <li><a className="dropdown-item" href="#">Consultar</a></li>
-                            <li><a className="dropdown-item" href="#">Aplicar</a></li>
-                            <li><a className="dropdown-item" href="#">Quitar</a></li>
-                        </ul>
-                    </li>
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="emprestimos" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Relatórios
-                        </a>
-                        <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="emprestimos">
-                            <li><a className="dropdown-item" href="#">Livros</a></li>
-                            <li><a className="dropdown-item" href="#">Multas</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+        <>
+            <Navbar variant="dark" bg="dark" expand="lg" >
+                <Container fluid>
+                            <Navbar.Toggle aria-controls="navbar-dark-example" />
+                            <Navbar.Collapse id="navbar-dark-example">
+                                <Nav className="m-auto">
+                                    <Navbar.Brand href="/dash">Home</Navbar.Brand>
+                                    <NavDropdown
+                                        id="nav-dropdown-dark-example"
+                                        title="Cadastros"
+                                        menuVariant="dark"
+                                    >
+                                        <NavDropdown.Item href="/crianca">Crianças</NavDropdown.Item>
+                                        <NavDropdown.Item href="/livros">Livros</NavDropdown.Item>
+                                        <NavDropdown.Item href="/usuarios">Usuários</NavDropdown.Item>
+                                    </NavDropdown>
+                                    <NavDropdown
+                                        id="nav-dropdown-dark-example"
+                                        title="Emprestimos"
+                                        menuVariant="dark"
+                                    >
+                                        <NavDropdown.Item href="/livros">Consultar</NavDropdown.Item>
+                                        <NavDropdown.Item href="/crianca">Emprestar</NavDropdown.Item>
+                                        <NavDropdown.Item href="/usuarios">Renovar</NavDropdown.Item>
+                                        <NavDropdown.Item href="/usuarios">Devolver</NavDropdown.Item>
+                                    </NavDropdown>
+                                    <NavDropdown
+                                        id="nav-dropdown-dark-example"
+                                        title="Multas"
+                                        menuVariant="dark"
+                                    >
+                                        <NavDropdown.Item href="/livros">Consultar</NavDropdown.Item>
+                                        <NavDropdown.Item href="/crianca">Aplicar</NavDropdown.Item>
+                                        <NavDropdown.Item href="/usuarios">Quitar</NavDropdown.Item>
+                                    </NavDropdown>
+                                    <NavDropdown
+                                        id="nav-dropdown-dark-example"
+                                        title="Relatórios"
+                                        menuVariant="dark"
+                                    >
+                                        <NavDropdown.Item href="/livros">Livros</NavDropdown.Item>
+                                        <NavDropdown.Item href="/crianca">Multas</NavDropdown.Item>
+                                    </NavDropdown>
+                                </Nav>
+                            </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </>
     )
-  
-  }
-  
-  export default Menu
+
+}
+
+export default Menu
