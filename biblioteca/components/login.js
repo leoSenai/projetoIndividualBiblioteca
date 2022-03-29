@@ -1,14 +1,14 @@
 import Image from 'next/image'
 import logo from '../public/arco-iris.png'
 import styles from '../styles/Home.module.css'
-import cookieCutter from 'cookie-cutter'
 import { useRouter } from 'next/router'
 import * as toastr from 'toastr'
-
+import Cookies from 'universal-cookie';
 
 export default function Login() {
     const router = useRouter();
 
+    const cookies = new Cookies();
     let spinner = "spinner-border text-light"
     const handleSubmit = async (event) => {
         
@@ -34,7 +34,7 @@ export default function Login() {
         const result = await response.json();
         
         if(response.status == 200){
-            cookieCutter.set("access_token", result.data);
+            cookies.set('access_token', result.access_token);
             router.push('/dash');
         }else{
             toastr.error("Login ou Senha Invalidos","Erro");
