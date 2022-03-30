@@ -22,6 +22,11 @@ export class CriancaController {
     return this.criancaService.findOne(id);
   }
 
+  @Get('id/:id')
+  findById(@Param('id') id: string) {
+    return this.criancaService.findById(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCriancaDto: UpdateCriancaDto) {
     return this.criancaService.update(+id, updateCriancaDto);

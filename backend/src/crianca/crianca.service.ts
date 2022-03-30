@@ -22,6 +22,10 @@ export class CriancaService {
     return this.criancaRepository.find();
   }
 
+  findById(id: number) {
+    return this.criancaRepository.findOne(id);
+  }
+
   findOne(cpf: string) {
     return this.criancaRepository.findOne({cpf});
   }

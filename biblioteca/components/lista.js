@@ -8,9 +8,8 @@ export default function Lista(props) {
     let heads = [];
 
     props.heads.forEach(function (el, k) {
-        heads.push(<th id={k} >{el}</th>);
+        heads.push(<th key={'head_'+k} >{el}</th>);
     })
-
 
     const cookies = new Cookies()
     const access_token = cookies.get('access_token');
@@ -34,16 +33,20 @@ export default function Lista(props) {
         let dadosExibir = []
         data.dados.forEach((el) => {
             let fieldDt = [];
+            let i = 0;
+
             field.forEach((fdt) => {
-                fieldDt.push(<td>{el[fdt]}</td>);
+                fieldDt.push(<td key={el[props.keyItem]+'_'+el[fdt]}>{el[fdt]}</td>);
             });
+            while(heads.length > fieldDt.length) {
+                fieldDt.push(<td key={'solo_'+i}></td>);
+            }
             dadosExibir.push(
-                <tr key={el[field[0]]}>
+                <tr onDoubleClick={props.dcop} title="Clique duas vezes para opções" id={el[props.keyItem]} key={'tr_'+el[props.keyItem]}>
                     {fieldDt}
                 </tr>
             );
         });
-        console.log(dadosExibir);
         return (
             <Table striped bordered hover>
                 <thead>
