@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import { Table } from "react-bootstrap";
+import Router from "next/router";
 
 export default function Lista(props) {
-
+// @refresh reset
     let heads = [];
 
     props.heads.forEach(function (el, k) {
@@ -23,7 +23,8 @@ export default function Lista(props) {
         }),
     }
     const fetcher = (...args) => fetch(...args).then(r => r.json());
-    const { data, error } = useSWR(['/api/' + props.api, options], fetcher)
+    const { data, error } = useSWR(['/api/' + props.api, options], fetcher, {refreshInterval: 500})
+
 
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
