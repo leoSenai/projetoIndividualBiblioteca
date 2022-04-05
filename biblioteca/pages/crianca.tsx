@@ -45,7 +45,10 @@ export default function Crianca() {
             },
             body: JSON.stringify({
                 "access_token": access_token,
-                "email_responsavel": email
+                "data":{
+                    "email_responsavel":email,
+                    "senha":senha
+                } 
             }),
         }
 
@@ -66,6 +69,7 @@ export default function Crianca() {
     const [id, setId] = useState(0);
     const [cpf, setCpf] = useState("");
     const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
     
     const opcoesCrianca = async (selC: any) => {
         let id = selC.target.parentNode.id;
@@ -73,14 +77,45 @@ export default function Crianca() {
         setId(crianca.dados.idcrianca);
         setCpf(crianca.dados.cpf);
         setEmail(crianca.dados.email_responsavel);
+        setSenha("qwerty");
         setControlModal(true);
     }
 
-    const addCrianca = () => {
-        
+    const addCrianca = async () => {
+        let addOps = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "access_token": access_token,
+                "data":{
+                    "email_responsavel": email,
+                    "cpf":cpf,
+                    "senha":senha
+                }
+            }),
+        }
+
+        let ok = await fetch('api/crianca/add', addOps);
+        if (ok.status != 200) {
+            setText("Ocorreu Algum erro, tente novamente");
+            setType("error")
+        }else{
+            setText("Criança adicionada com sucesso");
+            setType("success");
+        }
+
+        setOpen(true);
+        closeModal();
+
     }
 
     const modalAdd = () => {
+        setId(0);
+        setCpf("");
+        setEmail("");
+        setSenha("");
         setControlModalAdd(true);
     }
     return (
@@ -93,8 +128,8 @@ export default function Crianca() {
             <div className="col col-md-6 m-auto mt-4 ta-center">
                 <Lista api="/crianca/all" dcop={opcoesCrianca} heads={['CPF', 'Email Responsável']} fieldData={['cpf', 'email_responsavel']} keyItem={'idcrianca'} />
             </div>
-            <CriancaModal show={controlModal} title="Editando Criança" save={changeData} dados={[id, cpf, email]} dadosF={[setId, setCpf, setEmail]} close={closeModal}></CriancaModal>
-            <CriancaModal show={controlModalAdd} title="Adicionando Criança" save={addCrianca} dados={[id, cpf, email]} dadosF={[setId, setCpf, setEmail]} close={closeModal}></CriancaModal>
+            <CriancaModal show={controlModal} key="1" title="Editando Criança" save={changeData} dados={[id, cpf, email, senha]} dadosF={[setId, setCpf, setEmail, setSenha]} close={closeModal}></CriancaModal>
+            <CriancaModal show={controlModalAdd} key="2" title="Adicionando Criança" save={addCrianca} novo dados={[id, cpf, email, senha]} dadosF={[setId, setCpf, setEmail,setSenha]} close={closeModal}></CriancaModal>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
                     {text}

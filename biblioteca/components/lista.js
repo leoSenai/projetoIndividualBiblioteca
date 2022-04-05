@@ -1,7 +1,6 @@
 import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import { Table } from "react-bootstrap";
-import Router from "next/router";
 
 export default function Lista(props) {
 // @refresh reset
@@ -22,7 +21,7 @@ export default function Lista(props) {
             "access_token": access_token
         }),
     }
-    const fetcher = (...args) => fetch(...args).then(r => r.json());
+    const fetcher = (...args) => fetch(...args).then((res) => res.json())
     const { data, error } = useSWR(['/api/' + props.api, options], fetcher, {refreshInterval: 500})
 
 

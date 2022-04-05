@@ -1,19 +1,22 @@
-export default function handler(req, res){
-    const {access_token} = req.body
-    let retCriancas = [];
+const getData = (token) => {
     const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ access_token
+            'Authorization': 'Bearer ' + token
         }
     };
-    fetch('http://localhost:3333/crianca',options)
-        .then((response) => response.json())
-            .then((criancas) => {
-                res.status(200).json({
-                    "dados": criancas
-                });
-                res.end();
-            });
+    return new Promise(async (resolve, reject) => {
+        let response = await fetch('http://localhost:3333/crianca', options)
+        let data = await response.json();
+        return resolve(data);
+    });
+}
+
+export default async function handler(req, res) {
+    const { access_token } = req.body
+    const criancas = await getData(access_token);
+    res.status(200).json({
+        "dados": criancas
+    });
 }
