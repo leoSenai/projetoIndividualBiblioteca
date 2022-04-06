@@ -2,10 +2,11 @@ import Menu from "../components/menu";
 import Footer from "../components/footer";
 import Lista from "../components/lista";
 import CriancaModal from "../components/criancaModal";
+import PageBar from "../components/pageBar";
 import Cookies from 'universal-cookie';
 import React, { useState } from 'react';
 import { Alert, Snackbar, Icon } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import AlertToastr from "../components/alertToastr";
 
 export default function Crianca() {
 
@@ -14,7 +15,7 @@ export default function Crianca() {
     const [controlModalAdd, setControlModalAdd] = useState(false);
     const [open, setOpen]   = useState(false);
     const [text, setText]   = useState("Alteração salva com sucesso");
-    const [type, setType]   = useState("success");
+    const [type, setType]   = useState(true);
 
     const closeModal = () => {
         setControlModal(false)
@@ -55,10 +56,10 @@ export default function Crianca() {
         let ok = await fetch('api/crianca/' + id, alterOps);
         if (ok.status != 200) {
             setText("Ocorreu Algum erro, tente novamente");
-            setType("error")
+            setType(false)
         }else{
             setText("Alteração salva com sucesso");
-            setType("success");
+            setType(true);
         }
 
         setOpen(true);
@@ -100,10 +101,10 @@ export default function Crianca() {
         let ok = await fetch('api/crianca/add', addOps);
         if (ok.status != 200) {
             setText("Ocorreu Algum erro, tente novamente");
-            setType("error")
+            setType(false)
         }else{
-            setText("Criança adicionada com sucesso");
-            setType("success");
+            setText("Registro salvo com sucesso");
+            setType(true);
         }
 
         setOpen(true);
@@ -121,17 +122,20 @@ export default function Crianca() {
     return (
         <>
             <Menu />
-            <div className="col col-md-12 m-auto mt-4 ta-center text-white bg-dark">
-                <h2 className="m-auto">Crianças</h2>
-                <button className="btn btn-dark mx-2" onClick={modalAdd}>Adicionar<AddIcon fontSize="small" style={{verticalAlign: "text-top"}}/></button>
-            </div>
+            <PageBar title="Crianças" click={modalAdd} />
             <div className="col col-md-6 m-auto mt-4 ta-center">
-                <Lista api="/crianca/all" dcop={opcoesCrianca} heads={['CPF', 'Email Responsável']} fieldData={['cpf', 'email_responsavel']} keyItem={'idcrianca'} />
+                <Lista 
+                    api="/crianca/all" 
+                    dcop={opcoesCrianca} 
+                    heads={['CPF', 'Email Responsável']} 
+                    fieldData={['cpf', 'email_responsavel']} 
+                    keyItem={'idcrianca'} />
             </div>
             <CriancaModal show={controlModal} key="1" title="Editando Criança" save={changeData} dados={[id, cpf, email, senha]} dadosF={[setId, setCpf, setEmail, setSenha]} close={closeModal}></CriancaModal>
             <CriancaModal show={controlModalAdd} key="2" title="Adicionando Criança" save={addCrianca} novo dados={[id, cpf, email, senha]} dadosF={[setId, setCpf, setEmail,setSenha]} close={closeModal}></CriancaModal>
+            <AlertToastr open={open} type={type} close={handleClose} text={text}/>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
+                <Alert onClose={handleClose} severity={type?"success":"error"} sx={{ width: '100%' }}>
                     {text}
                 </Alert>
             </Snackbar>

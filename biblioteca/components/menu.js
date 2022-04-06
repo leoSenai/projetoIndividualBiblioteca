@@ -14,8 +14,8 @@ const Menu = () => {
                                         menuVariant="dark"
                                     >
                                         <NavDropdown.Item href="/crianca">Crianças</NavDropdown.Item>
-                                        <NavDropdown.Item href="/livros">Livros</NavDropdown.Item>
-                                        <NavDropdown.Item href="/usuarios">Usuários</NavDropdown.Item>
+                                        <NavDropdown.Item href="/livro">Livros</NavDropdown.Item>
+                                        <NavDropdown.Item href="/usuario">Usuários</NavDropdown.Item>
                                     </NavDropdown>
                                     <NavDropdown
                                         id="nav-dropdown-dark-example"
