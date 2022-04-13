@@ -1,3 +1,5 @@
+import { Alert, Snackbar } from "@mui/material";
+
 export default function AlertToastr(props){
     return (
         <Snackbar open={props.open} autoHideDuration={6000} onClose={props.close}>

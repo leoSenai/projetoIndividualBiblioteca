@@ -32,9 +32,9 @@ export default function Login() {
         
         const response = await fetch('api/login',options);
         const result = await response.json();
-        
+        console.log(result)
         if(response.status == 200){
-            cookies.set('access_token', result.access_token);
+            cookies.set('access_token', result.data);
             router.push('/dash');
         }else{
             toastr.error("Login ou Senha Invalidos","Erro");

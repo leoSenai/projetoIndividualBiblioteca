@@ -9,13 +9,21 @@ export default function CriancaModal(props){
         const [erroEmail, setErroEmail] = useState(false);
         const [erroSenha, setErroSenha] = useState(false);
 
-        const handleCpf = (event) => {
+        const handleCpf = async (event) => {
           props.dadosF[1](event.target.value);
+          if(isNaN(new Number(event.target.value + 1)) || (event.target.value.length + 1) != 11){
+            setErroCpf(true);
+            return false;
+          }
           setErroCpf(false);
         }
 
         const handleEmail = (event) => {
           props.dadosF[2](event.target.value);
+          if(!event.target.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)){
+            setErroEmail(true);
+            return false;
+          }
           setErroEmail(false);
         }
 
@@ -57,9 +65,9 @@ export default function CriancaModal(props){
                 <Modal.Title>{props.title}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                  <TextField id="cpf" error={erroCpf} key={typeKey+1} fullWidth margin="normal" label="CPF" onChange={handleCpf} defaultValue={props.dados[1]} readOnly={!props.novo}   helperText="Apenas Numeros." variant="outlined" />
-                  <TextField id="email" key={typeKey+2} fullWidth margin="normal" label="Email" defaultValue={props.dados[2]} onChange={handleEmail} placeholder="Email"  variant="outlined" />
-                  <TextField id="senha"  key={typeKey+3} fullWidth margin="normal" label="Senha" defaultValue={props.dados[3]} onChange={handleSenha} placeholder="Senha" type="password"   helperText="Minimo 4 digitos" variant="outlined" />
+                  <TextField id="cpf" error={erroCpf} key={typeKey+1} fullWidth margin="normal" label="CPF" onKeyPress={handleCpf} defaultValue={props.dados[1]} readOnly={!props.novo}   helperText="Apenas Numeros." variant="outlined" />
+                  <TextField id="email" error={erroEmail} key={typeKey+2} fullWidth margin="normal" label="Email" defaultValue={props.dados[2]} onChange={handleEmail} placeholder="Email"  variant="outlined" />
+                  <TextField id="senha" error={erroSenha} key={typeKey+3} fullWidth margin="normal" label="Senha" defaultValue={props.dados[3]} onChange={handleSenha} placeholder="Senha" type="password"   helperText="Minimo 4 digitos" variant="outlined" />
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={props.close}>

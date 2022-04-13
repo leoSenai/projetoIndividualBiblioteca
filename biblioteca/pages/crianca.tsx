@@ -5,7 +5,6 @@ import CriancaModal from "../components/criancaModal";
 import PageBar from "../components/pageBar";
 import Cookies from 'universal-cookie';
 import React, { useState } from 'react';
-import { Alert, Snackbar, Icon } from "@mui/material";
 import AlertToastr from "../components/alertToastr";
 
 export default function Crianca() {
@@ -134,11 +133,6 @@ export default function Crianca() {
             <CriancaModal show={controlModal} key="1" title="Editando Criança" save={changeData} dados={[id, cpf, email, senha]} dadosF={[setId, setCpf, setEmail, setSenha]} close={closeModal}></CriancaModal>
             <CriancaModal show={controlModalAdd} key="2" title="Adicionando Criança" save={addCrianca} novo dados={[id, cpf, email, senha]} dadosF={[setId, setCpf, setEmail,setSenha]} close={closeModal}></CriancaModal>
             <AlertToastr open={open} type={type} close={handleClose} text={text}/>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={type?"success":"error"} sx={{ width: '100%' }}>
-                    {text}
-                </Alert>
-            </Snackbar>
             <Footer />
         </>
     )
