@@ -99,12 +99,12 @@ export default function LivroModal(props) {
           <Modal.Title>{props.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <TextField id="ISBN" error={state.erroISBN} key={typeKey + 1} fullWidth margin="normal" label="ISBN" onKeyPress={() => handleInput(props.dadosF.setISBN, 'isbn')} defaultValue={props.dados.ISBN} variant="outlined" />
-          <TextField id="title" error={state.erroTitle} key={typeKey + 2} fullWidth margin="normal" label="Titulo" onKeyPress={() => handleInput(props.dadosF.setTitulo, 'title')} defaultValue={props.dados.titulo} variant="outlined" />
-          <TextField id="numExemp" error={state.erroNumExemp} key={typeKey + 3} fullWidth margin="normal" label="Numero de Exemplares" onKeyPress={() => handleInput(props.dadosF.setNumeroExemplares, 'numExemp')} defaultValue={props.dados.numeroExemplares } variant="outlined" />
-          <TextField id="edit" error={state.erroEdit} key={typeKey + 4} fullWidth margin="normal" label="Editora" onKeyPress={() => handleInput(props.dadosF.setEditora, 'edit')} defaultValue={props.dados.editora} variant="outlined" />
-          <TextField id="theme" error={state.erroTheme} key={typeKey + 5} fullWidth margin="normal" label="Tema" onKeyPress={() => handleInput(props.dadosF.setTema, 'theme')} defaultValue={props.dados.tema} variant="outlined" />
-          <TextField id="cat" error={state.erroCat} key={typeKey + 6} fullWidth margin="normal" label="Categoria" onKeyPress={() => handleInput(props.dadosF.setCategoria, 'cat')} defaultValue={props.dados.categoria} variant="outlined" />
+          <TextField id="ISBN" error={state.erroISBN} key={typeKey + 1} fullWidth margin="normal" label="ISBN" onChange={() => handleInput(props.dadosF.setISBN, 'isbn')} defaultValue={props.dados.ISBN} variant="outlined" />
+          <TextField id="title" error={state.erroTitle} key={typeKey + 2} fullWidth margin="normal" label="Titulo" onChange={() => handleInput(props.dadosF.setTitulo, 'title')} defaultValue={props.dados.titulo} variant="outlined" />
+          <TextField id="numExemp" error={state.erroNumExemp} key={typeKey + 3} fullWidth margin="normal" label="Numero de Exemplares" onChange={() => handleInput(props.dadosF.setNumeroExemplares, 'numExemp')} defaultValue={props.dados.numeroExemplares } variant="outlined" />
+          <TextField id="edit" error={state.erroEdit} key={typeKey + 4} fullWidth margin="normal" label="Editora" onChange={() => handleInput(props.dadosF.setEditora, 'edit')} defaultValue={props.dados.editora} variant="outlined" />
+          <TextField id="theme" error={state.erroTheme} key={typeKey + 5} fullWidth margin="normal" label="Tema" onChange={() => handleInput(props.dadosF.setTema, 'theme')} defaultValue={props.dados.tema} variant="outlined" />
+          <TextField id="cat" error={state.erroCat} key={typeKey + 6} fullWidth margin="normal" label="Categoria" onChange={() => handleInput(props.dadosF.setCategoria, 'cat')} defaultValue={props.dados.categoria} variant="outlined" />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.close}>
