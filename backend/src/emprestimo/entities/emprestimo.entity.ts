@@ -3,9 +3,12 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Emprestimo {
   @PrimaryGeneratedColumn()
+  idemprestimo: number;
+
+  @Column()
   idcrianca: number;
 
-  @PrimaryGeneratedColumn()
+  @Column()
   idlivro: number;
 
   @Column()

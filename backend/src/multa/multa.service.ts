@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateMultaDto } from './dto/create-multa.dto';
 import { UpdateMultaDto } from './dto/update-multa.dto';
+import { Multa } from './entities/multa.entity';
 
 @Injectable()
 export class MultaService {
+
+  constructor(
+    @InjectRepository(Multa) private multaRepository: Repository<Multa>
+  ){}
+
   create(createMultaDto: CreateMultaDto) {
-    return 'This action adds a new multa';
+    let multa = this.multaRepository.create(createMultaDto);
+    return this.multaRepository.save(multa);
   }
 
   findAll() {
-    return `This action returns all multa`;
+    return this.multaRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} multa`;
+    return this.multaRepository.findOne(id);
   }
 
   update(id: number, updateMultaDto: UpdateMultaDto) {
-    return `This action updates a #${id} multa`;
+    return this.multaRepository.update(id, updateMultaDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} multa`;
+    return this.multaRepository.delete(id);
   }
 }

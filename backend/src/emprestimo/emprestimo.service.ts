@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateEmprestimoDto } from './dto/create-emprestimo.dto';
 import { UpdateEmprestimoDto } from './dto/update-emprestimo.dto';
+import { Emprestimo } from './entities/emprestimo.entity';
 
 @Injectable()
 export class EmprestimoService {
+
+  constructor(
+    @InjectRepository(Emprestimo) private emprestimoRepository: Repository<Emprestimo>
+  ){}
+
   create(createEmprestimoDto: CreateEmprestimoDto) {
-    return 'This action adds a new emprestimo';
+    let emprestimo = this.emprestimoRepository.create(createEmprestimoDto);
+    return this.emprestimoRepository.save(emprestimo);
   }
 
   findAll() {
-    return `This action returns all emprestimo`;
+    return this.emprestimoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} emprestimo`;
+  findOne(idlivro: number, idcrianca: number) {
+    return this.emprestimoRepository.findOne({idlivro: idlivro, idcrianca: idcrianca});
   }
 
   update(id: number, updateEmprestimoDto: UpdateEmprestimoDto) {
-    return `This action updates a #${id} emprestimo`;
+    return this.emprestimoRepository.update(id, updateEmprestimoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} emprestimo`;
+    return this.emprestimoRepository.delete(id);
   }
 }

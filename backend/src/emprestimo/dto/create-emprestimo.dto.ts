@@ -5,4 +5,5 @@ export class CreateEmprestimoDto {
     estado_livro:string;
     idcrianca: number;
     idlivro: number;
+    idemprestimo: number;
 }

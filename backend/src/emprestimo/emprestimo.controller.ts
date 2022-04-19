@@ -17,9 +17,9 @@ export class EmprestimoController {
     return this.emprestimoService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.emprestimoService.findOne(+id);
+  @Get(':idlivro/:idcrianca')
+  findOne(@Param('idlivro') idlivro: string, @Param('idcrianca') idcrianca: string) {
+    return this.emprestimoService.findOne(+idlivro,+idcrianca);
   }
 
   @Patch(':id')
