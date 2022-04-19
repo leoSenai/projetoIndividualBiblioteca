@@ -6,7 +6,6 @@ import Menu from '../components/menu';
 import PageBar from '../components/pageBar';
 import LivroModal from '../components/livroModal'
 import AlertToastr from '../components/alertToastr';
-import { LocalActivityRounded } from '@mui/icons-material';
 
 export default function Livro(){
 

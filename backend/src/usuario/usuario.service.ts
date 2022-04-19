@@ -25,6 +25,10 @@ export class UsuarioService {
     return this.usuarioRepository.findOne({matricula:matricula});
   }
 
+  findOneId(id:number){
+    return this.usuarioRepository.findOne(id);
+  }
+
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuarioRepository.update(id, updateUsuarioDto);
   }

@@ -25,6 +25,10 @@ export class UsuarioController {
     return this.usuarioService.findOne(+id);
   }
 
+  @Get('id/:id')
+  findOneId(@Param('id') id: string) {
+    return this.usuarioService.findOneId(+id);
+  }
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     if(updateUsuarioDto.senha != undefined){
