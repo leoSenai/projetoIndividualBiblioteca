@@ -15,6 +15,11 @@ export class EmprestimoService {
     private connection: Connection
   ){}
 
+  onlyDate(fullDate:string){
+    let only = fullDate.split('T');
+    return only[0]
+  }
+
   async create(createEmprestimoDto: CreateEmprestimoDto) {
     let multas =  await this.multaService.countMultas(createEmprestimoDto.idcrianca);
     if(multas > 0 ){
@@ -26,12 +31,33 @@ export class EmprestimoService {
       throw new HttpException("Limite de emprestimos excedido",400);
     }
 
+
+    let query = this.connection.createQueryRunner();
+    await query.connect();
+    let disponivel = await query.query(`select (l.numeroExemplares - count(e.idemprestimo)) as disponiveis from emprestimo e inner join livro l on l.idlivro = e.idlivro where e.idlivro = ${createEmprestimoDto.idlivro}`);
+    query.release();
+    
+    if(disponivel <= 0){
+      throw new HttpException("Sem exemplares disponíveis",400);
+    }
+
+    let hoje = new Date();
+    let devolver = new Date();
+    devolver.setDate(hoje.getDate() + 8);
+
+    createEmprestimoDto.data_inicio = this.onlyDate(hoje.toISOString())
+    createEmprestimoDto.data_devolucao = this.onlyDate(devolver.toISOString())
+
     let emprestimo = this.emprestimoRepository.create(createEmprestimoDto);
     return this.emprestimoRepository.save(emprestimo);
   }
 
   async renew(idemprestimo: number, idcrianca: number, idlivro: number){
+    
+    console.log(idemprestimo);
+
     let multas =  await this.multaService.countMultas(idcrianca);
+    
     if(multas > 0 ){
       throw new HttpException("Há multas ativas para esta criança",400);
     }
@@ -40,8 +66,24 @@ export class EmprestimoService {
     if(emprestados >= 2){
       throw new HttpException("Limite de emprestimos excedido",400);
     }
-    //select (count(e.idemprestimo) - l.numeroExemplares) from emprestimo e inner join livro l on l.idlivro = e.idlivro where e.idlivro =
-    this.connection.createQueryRunner();
+    
+    let query = this.connection.createQueryRunner();
+    await query.connect();
+    
+    let disponivel = await query.query(`select (l.numeroExemplares - count(e.idemprestimo)) as disponiveis from emprestimo e inner join livro l on l.idlivro = e.idlivro where e.idlivro = ${idlivro}`);
+    
+    await query.release();
+    
+    if(disponivel <= 1){
+      throw new HttpException("Sem exemplares disponíveis",400);
+    }
+
+    let emprestimo = await this.emprestimoRepository.findOne({idemprestimo:idemprestimo});
+    emprestimo.renovacao++
+    let novaDevolucao = new Date(emprestimo.data_devolucao);
+    novaDevolucao.setDate(novaDevolucao.getDate() + 8);
+
+    return this.emprestimoRepository.update(idemprestimo, emprestimo);
   }
 
   findAll() {

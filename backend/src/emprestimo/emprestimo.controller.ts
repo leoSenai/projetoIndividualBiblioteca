@@ -27,6 +27,11 @@ export class EmprestimoController {
     return this.emprestimoService.update(+id, updateEmprestimoDto);
   }
 
+  @Patch('renovar')
+  renovar(@Body() dados: any) {
+    return this.emprestimoService.renew(dados.idemprestimo, dados.idcrianca, dados.idlivro);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.emprestimoService.remove(+id);
