@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([Multa])],
   controllers: [MultaController],
-  providers: [MultaService]
+  providers: [MultaService],
+  exports: [MultaService]
 })
 export class MultaModule {}

@@ -7,6 +7,7 @@ import { Crianca } from './entities/crianca.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Crianca])],
   controllers: [CriancaController],
-  providers: [CriancaService]
+  providers: [CriancaService],
+  exports: [CriancaService]
 })
 export class CriancaModule {}

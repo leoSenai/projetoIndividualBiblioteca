@@ -6,4 +6,5 @@ export class CreateEmprestimoDto {
     idcrianca: number;
     idlivro: number;
     idemprestimo: number;
+    ativo:string;
 }

@@ -22,4 +22,7 @@ export class Emprestimo {
 
   @Column()
   estado_livro: string;
+
+  @Column()
+  ativo: string;
 }

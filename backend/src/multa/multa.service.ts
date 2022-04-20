@@ -25,6 +25,10 @@ export class MultaService {
     return this.multaRepository.findOne(id);
   }
 
+  countMultas(idcrianca:number){
+    return this.multaRepository.count({idcrianca:idcrianca, ativa:'S'});
+  }
+
   update(id: number, updateMultaDto: UpdateMultaDto) {
     return this.multaRepository.update(id, updateMultaDto);
   }
