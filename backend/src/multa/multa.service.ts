@@ -12,7 +12,25 @@ export class MultaService {
     @InjectRepository(Multa) private multaRepository: Repository<Multa>
   ){}
 
-  create(createMultaDto: CreateMultaDto) {
+  create(createMultaDto: CreateMultaDto, devPrevista: string) {
+    //tipo A - atraso
+    //tipo R - rasura
+    //tipo D - destruição
+
+    let hoje = new Date();
+    let quitar = new Date();
+    switch (createMultaDto.tipo){
+      case "A":
+        quitar.setDate(hoje.getDate() + 8);
+        break;
+      case "R":
+        //rodar query para multiplicações
+        quitar.setDate(hoje.getDate() + 8);
+        break;
+      case "D":
+        quitar.setDate(hoje.getDate() + 365);
+    }
+
     let multa = this.multaRepository.create(createMultaDto);
     return this.multaRepository.save(multa);
   }

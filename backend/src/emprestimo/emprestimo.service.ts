@@ -54,8 +54,6 @@ export class EmprestimoService {
 
   async renew(idemprestimo: number, idcrianca: number, idlivro: number){
     
-    console.log(idemprestimo);
-
     let multas =  await this.multaService.countMultas(idcrianca);
     
     if(multas > 0 ){
@@ -82,6 +80,7 @@ export class EmprestimoService {
     emprestimo.renovacao++
     let novaDevolucao = new Date(emprestimo.data_devolucao);
     novaDevolucao.setDate(novaDevolucao.getDate() + 8);
+    emprestimo.data_devolucao = this.onlyDate(novaDevolucao.toISOString());
 
     return this.emprestimoRepository.update(idemprestimo, emprestimo);
   }
