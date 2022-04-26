@@ -8,8 +8,11 @@ export class MultaController {
   constructor(private readonly multaService: MultaService) {}
 
   @Post()
-  create(@Body() createMultaDto: CreateMultaDto) {
-    return this.multaService.create(createMultaDto);
+  create(@Body() dados:any) {
+    const {dataDevolucao, ...others} = dados;
+    let createMultaDto = new CreateMultaDto()
+    createMultaDto = others;
+    return this.multaService.create(createMultaDto, dataDevolucao);
   }
 
   @Get()
@@ -25,6 +28,11 @@ export class MultaController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMultaDto: UpdateMultaDto) {
     return this.multaService.update(+id, updateMultaDto);
+  }
+
+  @Patch('quitar/:id')
+  quitar(@Param('id') id: string){
+    return this.multaService.quitar(+id);
   }
 
   @Delete(':id')

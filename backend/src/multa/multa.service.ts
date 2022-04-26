@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EmprestimoService } from 'src/emprestimo/emprestimo.service';
+import { Connection, Repository } from 'typeorm';
 import { CreateMultaDto } from './dto/create-multa.dto';
 import { UpdateMultaDto } from './dto/update-multa.dto';
 import { Multa } from './entities/multa.entity';
@@ -9,28 +10,50 @@ import { Multa } from './entities/multa.entity';
 export class MultaService {
 
   constructor(
-    @InjectRepository(Multa) private multaRepository: Repository<Multa>
-  ){}
+    @InjectRepository(Multa) private multaRepository: Repository<Multa>, 
+    @Inject(forwardRef(() => EmprestimoService))
+    private connection : Connection,
+    private emprestimoService: EmprestimoService
+  ) { }
 
-  create(createMultaDto: CreateMultaDto, devPrevista: string) {
+  dateDiff(d2: string) {
+    const date1 = new Date().valueOf();
+    const date2 = new Date(d2).valueOf();
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+  onlyDate(fullDate:string){
+    let only = fullDate.split('T');
+    return only[0]
+  }
+
+  async create(createMultaDto: CreateMultaDto, devPrevista: string) {
     //tipo A - atraso
     //tipo R - rasura
     //tipo D - destruição
-
+    console.log(createMultaDto, devPrevista);
     let hoje = new Date();
     let quitar = new Date();
-    switch (createMultaDto.tipo){
+    switch (createMultaDto.tipo) {
       case "A":
-        quitar.setDate(hoje.getDate() + 8);
+        quitar.setDate(hoje.getDate() + (this.dateDiff(devPrevista) * 2 -1) );
         break;
       case "R":
-        //rodar query para multiplicações
-        quitar.setDate(hoje.getDate() + 8);
+        let multasRazura = await this.multaRepository.count({idcrianca:createMultaDto.idcrianca, tipo:'R'});
+        if(multasRazura > 0){
+          quitar.setDate(hoje.getDate() + 30*2**multasRazura);
+        }else{
+          quitar.setDate(hoje.getDate() + 30);
+        }
         break;
       case "D":
         quitar.setDate(hoje.getDate() + 365);
     }
-
+    console.log(quitar.toISOString())
+    createMultaDto.data_inicio = this.onlyDate(hoje.toISOString());
+    createMultaDto.data_quitacao = this.onlyDate(quitar.toISOString());
     let multa = this.multaRepository.create(createMultaDto);
     return this.multaRepository.save(multa);
   }
@@ -41,14 +64,18 @@ export class MultaService {
 
   findOne(id: number) {
     return this.multaRepository.findOne(id);
-  }
+  } 
 
-  countMultas(idcrianca:number){
-    return this.multaRepository.count({idcrianca:idcrianca, ativa:'S'});
+  countMultas(idcrianca: number) {
+    return this.multaRepository.count({ idcrianca: idcrianca, ativa: 'S' });
   }
 
   update(id: number, updateMultaDto: UpdateMultaDto) {
     return this.multaRepository.update(id, updateMultaDto);
+  }
+
+  quitar(id: number){
+    return this.update(id, {ativa:'N'})
   }
 
   remove(id: number) {

@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MultaService } from 'src/multa/multa.service';
 import { Connection, Repository } from 'typeorm';
@@ -11,6 +11,7 @@ export class EmprestimoService {
 
   constructor(
     @InjectRepository(Emprestimo) private emprestimoRepository: Repository<Emprestimo>,
+    @Inject(forwardRef(() => MultaService))
     private multaService: MultaService,
     private connection: Connection
   ){}

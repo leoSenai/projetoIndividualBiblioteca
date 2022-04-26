@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { EmprestimoService } from './emprestimo.service';
 import { EmprestimoController } from './emprestimo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,9 +8,10 @@ import { MultaModule } from 'src/multa/multa.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Emprestimo]),
-    MultaModule
+    forwardRef(() => MultaModule)
   ],
   controllers: [EmprestimoController],
-  providers: [EmprestimoService]
+  providers: [EmprestimoService],
+  exports: [EmprestimoService]
 })
 export class EmprestimoModule {}
