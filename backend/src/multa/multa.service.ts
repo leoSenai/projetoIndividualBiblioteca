@@ -66,6 +66,10 @@ export class MultaService {
     return this.multaRepository.findOne(id);
   } 
 
+  findAllByIdCrianca(id: number) {
+    return this.multaRepository.find({idcrianca:id});
+  }
+
   countMultas(idcrianca: number) {
     return this.multaRepository.count({ idcrianca: idcrianca, ativa: 'S' });
   }

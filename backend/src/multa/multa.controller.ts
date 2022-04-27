@@ -25,6 +25,11 @@ export class MultaController {
     return this.multaService.findOne(+id);
   }
 
+  @Get('/crianca/:idcrianca')
+  findAllByIdCrianca(@Param('idcrianca') id: string) {
+    return this.multaService.findAllByIdCrianca(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMultaDto: UpdateMultaDto) {
     return this.multaService.update(+id, updateMultaDto);
