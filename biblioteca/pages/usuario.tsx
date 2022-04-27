@@ -116,7 +116,7 @@ export default function Usuario(){
         };
     } 
 
-    const modalAddBook = () => {
+    const modalAddUser = () => {
         setId(0);
         setNome("");
         setAdministrador("N");
@@ -127,7 +127,7 @@ export default function Usuario(){
 
     return (<> 
         <Menu/>
-        <PageBar title="Livros" click={modalAddBook}/>
+        <PageBar title="Usuários" click={modalAddUser}/>
         <Lista 
             api="/usuario/all" 
             dcop={modalChangeUser}

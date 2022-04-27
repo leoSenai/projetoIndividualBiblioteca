@@ -17,25 +17,8 @@ const Menu = () => {
                                         <NavDropdown.Item href="/livro">Livros</NavDropdown.Item>
                                         <NavDropdown.Item href="/usuario">Usuários</NavDropdown.Item>
                                     </NavDropdown>
-                                    <NavDropdown
-                                        id="nav-dropdown-dark-example"
-                                        title="Emprestimos"
-                                        menuVariant="dark"
-                                    >
-                                        <NavDropdown.Item href="/livros">Consultar</NavDropdown.Item>
-                                        <NavDropdown.Item href="/crianca">Emprestar</NavDropdown.Item>
-                                        <NavDropdown.Item href="/usuarios">Renovar</NavDropdown.Item>
-                                        <NavDropdown.Item href="/usuarios">Devolver</NavDropdown.Item>
-                                    </NavDropdown>
-                                    <NavDropdown
-                                        id="nav-dropdown-dark-example"
-                                        title="Multas"
-                                        menuVariant="dark"
-                                    >
-                                        <NavDropdown.Item href="/livros">Consultar</NavDropdown.Item>
-                                        <NavDropdown.Item href="/crianca">Aplicar</NavDropdown.Item>
-                                        <NavDropdown.Item href="/usuarios">Quitar</NavDropdown.Item>
-                                    </NavDropdown>
+                                    <Nav.Link href="/emprestimo">Empréstimos</Nav.Link>
+                                    <Nav.Link href="/multa">Multas</Nav.Link>
                                     <NavDropdown
                                         id="nav-dropdown-dark-example"
                                         title="Relatórios"
