@@ -18,7 +18,7 @@ export class EmprestimoController {
   }
 
   @Get('basic')
-  findALlSpecial(){
+  findAllSpecial(){
     return this.emprestimoService.findAllSpecial();
   }
 

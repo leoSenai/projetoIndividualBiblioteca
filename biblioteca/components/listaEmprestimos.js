@@ -24,13 +24,19 @@ export default function ListaEmprestimos(props) {
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
 
-    const renewHandle = (id) => {
-        console.log(id+"Renovar");
+    const renewHandle = (id, idcrianca, idlivro) => {
+        console.log(id+"Renovar"+idcrianca+" "+idlivro);
     }
 
     const returnHandle = (id) => {
         console.log(id+"Retornar");
     }
+
+    const penaltyHandle = (id) => {
+        console.log(id+"Multa")
+    }
+
+    console.log(data.dados);
 
     const showData = (data) => {
         let dadosFormatados = []
@@ -42,12 +48,15 @@ export default function ListaEmprestimos(props) {
                     <td>{element.titulo}</td>
                     <td>{element.renovacao}</td>
                     <td>{dataDevolucao.toLocaleDateString('pt-BR')}</td>
-                    <td className="rig">
-                        <div title="Renovar Empréstimo" onClick={ () => renewHandle(element.idemprestimo)}>
+                    <td className="ta-center">
+                        <div className="mx-3" title="Renovar Empréstimo" onClick={ () => renewHandle(element.idemprestimo, element.idcrianca, element.idlivro)}>
                             <CachedIcon/>
                         </div>
-                        <div title="Encerrar Empréstimo" onClick={ () => returnHandle(element.idemprestimo)}>
+                        <div className="mx-3" title="Encerrar Empréstimo" onClick={ () => returnHandle(element.idemprestimo)}>
                             <DownloadDoneIcon/>
+                        </div>
+                        <div title="Multar" className="mx-3" onClick={ () => penaltyHandle(element.idemprestimo)}>
+                            <PriorityHighIcon/>
                         </div>
                     </td>
                 </tr>
