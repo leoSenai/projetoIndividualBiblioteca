@@ -54,7 +54,6 @@ export class EmprestimoService {
   }
 
   async renew(idemprestimo: number, idcrianca: number, idlivro: number){
-    
     let multas =  await this.multaService.countMultas(idcrianca);
     
     if(multas > 0 ){
@@ -96,7 +95,8 @@ export class EmprestimoService {
     let disponivel = await query.query(`select c.cpf, c.idcrianca, l.idlivro, l.titulo, e.data_devolucao, e.renovacao, e.idemprestimo
     from emprestimo e 
     inner join crianca c on e.idcrianca=c.idcrianca
-    inner join livro l on e.idlivro=l.idlivro;`);
+    inner join livro l on e.idlivro=l.idlivro 
+    order by e.data_devolucao DESC;`);
     await query.release();
     return disponivel;
   }

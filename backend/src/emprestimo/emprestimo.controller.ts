@@ -32,9 +32,9 @@ export class EmprestimoController {
     return this.emprestimoService.update(+id, updateEmprestimoDto);
   }
 
-  @Patch('/renovar/:id')
+  @Patch('renovar/:id')
   renew(@Body() dados: any) {
-    return this.emprestimoService.renew(dados.idemprestimo, dados.idcrianca, dados.idlivro);
+    return this.emprestimoService.renew(+dados.idemprestimo, +dados.idcrianca, +dados.idlivro);
   }
 
   @Delete(':id')

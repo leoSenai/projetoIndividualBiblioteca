@@ -24,8 +24,29 @@ export default function ListaEmprestimos(props) {
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
 
-    const renewHandle = (id, idcrianca, idlivro) => {
-        console.log(id+"Renovar"+idcrianca+" "+idlivro);
+    const renewHandle = async (id, idcrianca, idlivro) => {
+        let addOps = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "access_token": access_token,
+                "data":{
+                    "idemprestimo": id,
+                    "idcrianca":idcrianca,
+                    "idlivro":idlivro
+                }
+            }),
+        }
+
+        let renovar = await fetch('api/emprestimos/renew', addOps);
+
+        if (renovar.status != 200) {
+            console.log("shiet")
+        }else{
+            console.log("Uhuu")
+        }
     }
 
     const returnHandle = (id) => {
@@ -35,8 +56,6 @@ export default function ListaEmprestimos(props) {
     const penaltyHandle = (id) => {
         console.log(id+"Multa")
     }
-
-    console.log(data.dados);
 
     const showData = (data) => {
         let dadosFormatados = []
@@ -66,7 +85,6 @@ export default function ListaEmprestimos(props) {
     }
 
     if (data) {
-        console.log(showData(data));  
         return (
             <Table striped bordered hover>
                 <thead>
