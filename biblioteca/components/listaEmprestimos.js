@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import CachedIcon from '@mui/icons-material/Cached';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import * as toastr from 'toastr'
 
 export default function ListaEmprestimos(props) {
 // @refresh reset
@@ -41,11 +42,13 @@ export default function ListaEmprestimos(props) {
         }
 
         let renovar = await fetch('api/emprestimos/renew', addOps);
-
+        console.log(renovar)
         if (renovar.status != 200) {
-            console.log("shiet")
+            let msg = await renovar.text()
+            console.log(msg)
+            toastr.error(msg,"Erro")
         }else{
-            console.log("Uhuu")
+            toastr.success('Empréstimo renovado com sucesso','Sucesso')
         }
     }
 

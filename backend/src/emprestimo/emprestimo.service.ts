@@ -57,12 +57,14 @@ export class EmprestimoService {
     let multas =  await this.multaService.countMultas(idcrianca);
     
     if(multas > 0 ){
-      throw new HttpException("Há multas ativas para esta criança",400);
+      let ex = new HttpException("Há multas ativas para esta criança",400);
+      ex.message = "Há multas ativas para esta criança";
+      throw ex;
     }
 
     let emprestados = await this.emprestimoRepository.count({idcrianca:idcrianca,ativo:'S'});
     if(emprestados >= 2){
-      throw new HttpException("Limite de emprestimos excedido",400);
+     
     }
     
     let query = this.connection.createQueryRunner();
@@ -73,7 +75,9 @@ export class EmprestimoService {
     await query.release();
     
     if(disponivel <= 1){
-      throw new HttpException("Sem exemplares disponíveis",400);
+      let ex = new HttpException("Sem exemplares disponíveis",400);
+      ex.message = "Sem exemplares disponíveis";
+      throw ex;
     }
 
     let emprestimo = await this.emprestimoRepository.findOne({idemprestimo:idemprestimo});
