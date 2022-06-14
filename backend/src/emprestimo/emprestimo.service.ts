@@ -116,4 +116,16 @@ export class EmprestimoService {
   remove(id: number) {
     return this.emprestimoRepository.delete(id);
   }
+
+  async close(id: number){
+    let emprestimo =  await this.emprestimoRepository.findOne(id);
+    let hoje = new Date();
+    let devolucao = new Date(emprestimo.data_devolucao);
+    if(devolucao < hoje){
+      this.multaService.createLate(emprestimo.idcrianca,emprestimo.data_devolucao);
+    }
+    emprestimo.ativo = 'N' 
+    await this.emprestimoRepository.save(emprestimo);
+    return 'OK'
+  }
 }

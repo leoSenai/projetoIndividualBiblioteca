@@ -33,7 +33,6 @@ export class MultaService {
     //tipo A - atraso
     //tipo R - rasura
     //tipo D - destruição
-    console.log(createMultaDto, devPrevista);
     let hoje = new Date();
     let quitar = new Date();
     switch (createMultaDto.tipo) {
@@ -51,16 +50,47 @@ export class MultaService {
       case "D":
         quitar.setDate(hoje.getDate() + 365);
     }
-    console.log(quitar.toISOString())
     createMultaDto.data_inicio = this.onlyDate(hoje.toISOString());
     createMultaDto.data_quitacao = this.onlyDate(quitar.toISOString());
     let multa = this.multaRepository.create(createMultaDto);
     return this.multaRepository.save(multa);
   }
 
+  async createLate(idCrianca: number, devPrevista:string){
+    let multa = new CreateMultaDto;
+    multa.ativa = 'S';
+    multa.idcrianca = idCrianca;
+    multa.motivo = "Atraso de devolução"
+    multa.tipo = "A";
+    multa.valor = "0";
+    return this.create(multa, devPrevista);
+  }
+
+  async createErasure(idCrianca: number){
+    let multa = new CreateMultaDto;
+    multa.ativa = 'S';
+    multa.idcrianca = idCrianca;
+    multa.motivo = "Rasura de Livro"
+    multa.tipo = "R";
+    multa.valor = "0";
+    return this.create(multa, "auto");
+  }
+
+  async createDestruction(idCrianca: number, valor: string){
+    let multa = new CreateMultaDto;
+    multa.ativa = 'S';
+    multa.idcrianca = idCrianca;
+    multa.motivo = "Destruição ou Extravio de Livro"
+    multa.tipo = "D";
+    multa.valor = valor;
+    return this.create(multa, "auto");
+  }
+
   findAll() {
     return this.multaRepository.find();
   }
+
+  
 
   findOne(id: number) {
     return this.multaRepository.findOne(id);

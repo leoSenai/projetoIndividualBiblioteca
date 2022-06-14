@@ -34,7 +34,7 @@ export class EmprestimoController {
 
   @Patch('encerrar/:id')
   close(@Param('id') idEmprestimo: string){
-    
+    return this.emprestimoService.close(+idEmprestimo);
   }
 
   @Patch('renovar/:id')
