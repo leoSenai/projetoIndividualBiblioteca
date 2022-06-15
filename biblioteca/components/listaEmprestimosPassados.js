@@ -6,8 +6,8 @@ import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import * as toastr from 'toastr'
 
-export default function ListaEmprestimos(props) {
-// @refresh reset
+export default function ListaEmprestimosPassados(props) {
+    // @refresh reset
 
     const cookies = new Cookies()
     const access_token = cookies.get('access_token');
@@ -21,7 +21,7 @@ export default function ListaEmprestimos(props) {
         }),
     }
     const fetcher = (...args) => fetch(...args).then((res) => res.json())
-    const { data, error } = useSWR(['/api/emprestimos/all', options], fetcher, {refreshInterval: 500})
+    const { data, error } = useSWR(['/api/emprestimos/all', options], fetcher, { refreshInterval: 500 })
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
 
@@ -33,10 +33,10 @@ export default function ListaEmprestimos(props) {
             },
             body: JSON.stringify({
                 "access_token": access_token,
-                "data":{
+                "data": {
                     "idemprestimo": id,
-                    "idcrianca":idcrianca,
-                    "idlivro":idlivro
+                    "idcrianca": idcrianca,
+                    "idlivro": idlivro
                 }
             }),
         }
@@ -46,66 +46,66 @@ export default function ListaEmprestimos(props) {
         if (renovar.status != 200) {
             let msg = await renovar.text()
             console.log(msg)
-            toastr.error(msg,"Erro")
-        }else{
-            toastr.success('Empréstimo renovado com sucesso','Sucesso')
+            toastr.error(msg, "Erro")
+        } else {
+            toastr.success('Empréstimo renovado com sucesso', 'Sucesso')
         }
     }
 
     const returnHandle = (id) => {
-        console.log(id+"Retornar");
+        console.log(id + "Retornar");
     }
 
     const penaltyHandle = (id) => {
-        console.log(id+"Multa")
+        console.log(id + "Multa")
     }
 
     const showData = (data) => {
         let dadosFormatados = []
-        data.dados.forEach((element)=>{
-            let dataDevolucao = new Date(element.data_devolucao);
-            dadosFormatados.push(
-                <tr key={element.idemprestimo}>
-                    <td>{element.cpf}</td>
-                    <td>{element.titulo}</td>
-                    <td>{element.renovacao}</td>
-                    <td>{dataDevolucao.toLocaleDateString('pt-BR')}</td>
-                    <td className="ta-center">
-                        <div className="mx-3" title="Renovar Empréstimo" onClick={ () => renewHandle(element.idemprestimo, element.idcrianca, element.idlivro)}>
-                            <CachedIcon/>
-                        </div>
-                        <div className="mx-3" title="Encerrar Empréstimo" onClick={ () => returnHandle(element.idemprestimo)}>
-                            <DownloadDoneIcon/>
-                        </div>
-                        <div title="Multar" className="mx-3" onClick={ () => penaltyHandle(element.idemprestimo)}>
-                            <PriorityHighIcon/>
-                        </div>
-                    </td>
-                </tr>
-            )
+        console.log(data)
+        data.dados.forEach((element) => {
+            if (element.ativo === 'N') {
+
+                let dataDevolucao = new Date(element.data_devolucao);
+                dadosFormatados.push(
+                    <tr key={element.idemprestimo}>
+                        <td>{element.cpf}</td>
+                        <td>{element.titulo}</td>
+                        <td>{element.renovacao}</td>
+                        <td>{dataDevolucao.toLocaleDateString('pt-BR')}</td>
+                    </tr>
+                )
+            }
         });
+        if(dadosFormatados.length == 0){
+            return(<tr>
+                <td colSpan={5} className="text-center">Nenhum Empréstimo Ativo</td>
+            </tr>)
+        }
         return dadosFormatados;
     }
 
     if (data) {
-        return (
+        return <>
             <Table striped bordered hover>
                 <thead>
+                    <tr>
+                        <th className="text-center" colSpan={4}>Fechados</th>
+                    </tr>
                     <tr>
                         <th>CPF Criança</th>
                         <th>Livro</th>
                         <th>Nº de Renovações</th>
                         <th>Data Devolução</th>
-                        <th>Opções</th>
                     </tr>
                 </thead>
                 <tbody>
                     {showData(data)}
                 </tbody>
             </Table>
-        )
+        </>
     }
     return (<>
-        <h1>Erro</h1>   
+        <h1>Erro</h1>
     </>)
 }

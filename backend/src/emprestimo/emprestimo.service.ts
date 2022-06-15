@@ -96,7 +96,7 @@ export class EmprestimoService {
   async findAllSpecial(){
     let query = this.connection.createQueryRunner();
     await query.connect();
-    let disponivel = await query.query(`select c.cpf, c.idcrianca, l.idlivro, l.titulo, e.data_devolucao, e.renovacao, e.idemprestimo
+    let disponivel = await query.query(`select c.cpf, c.idcrianca, l.idlivro, l.titulo, e.ativo, e.data_devolucao, e.renovacao, e.idemprestimo
     from emprestimo e 
     inner join crianca c on e.idcrianca=c.idcrianca
     inner join livro l on e.idlivro=l.idlivro 
