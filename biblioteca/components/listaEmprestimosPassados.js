@@ -25,41 +25,6 @@ export default function ListaEmprestimosPassados(props) {
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
 
-    const renewHandle = async (id, idcrianca, idlivro) => {
-        let addOps = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "access_token": access_token,
-                "data": {
-                    "idemprestimo": id,
-                    "idcrianca": idcrianca,
-                    "idlivro": idlivro
-                }
-            }),
-        }
-
-        let renovar = await fetch('api/emprestimos/renew', addOps);
-        console.log(renovar)
-        if (renovar.status != 200) {
-            let msg = await renovar.text()
-            console.log(msg)
-            toastr.error(msg, "Erro")
-        } else {
-            toastr.success('Empréstimo renovado com sucesso', 'Sucesso')
-        }
-    }
-
-    const returnHandle = (id) => {
-        console.log(id + "Retornar");
-    }
-
-    const penaltyHandle = (id) => {
-        console.log(id + "Multa")
-    }
-
     const showData = (data) => {
         let dadosFormatados = []
         console.log(data)
