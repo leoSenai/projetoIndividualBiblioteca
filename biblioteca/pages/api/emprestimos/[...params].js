@@ -14,6 +14,7 @@ const renew = async (token, data) => {
 }
 
 const add = async (token, data) => {
+    console.log(data)
     const options = {
         method: 'POST',
         headers: {

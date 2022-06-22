@@ -3,9 +3,15 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Cookies from "universal-cookie";
 import useSWR from 'swr'
+import { useState } from "react";
 
 export default function EmprestimoModal(props) {
   const show = props.show;
+
+  const [livroInputValue, setLivroInputValue] = useState("");
+  const [criancaInputValue, setCriancaInputValue] = useState("");
+  const [detalheInputValue, setDetalheInputValue] = useState("");
+
 
   const cookies = new Cookies()
   const access_token = cookies.get('access_token');
@@ -15,9 +21,35 @@ export default function EmprestimoModal(props) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      "access_token": access_token
+      "access_token": access_token,
+      "data": {
+        "idlivro":livroInputValue,
+        "idcrianca":criancaInputValue,
+        "estado_livro":detalheInputValue
+      }
     }),
   }
+
+  const makeNew = async () => {
+    let addOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "access_token": access_token,
+        "data": {
+          "idlivro":livroInputValue,
+          "idcrianca":criancaInputValue,
+          "estado_livro":detalheInputValue
+        }
+      }),
+    }
+    console.log(addOptions)
+    let req = await fetch("api/emprestimos/add", addOptions);
+    console.log(req);
+  }
+
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
   const livros = useSWR(['/api/livro/all', options], fetcher)
@@ -39,24 +71,43 @@ export default function EmprestimoModal(props) {
   }
   return (
     <>
+    {console.log(livroInputValue, criancaInputValue, detalheInputValue)}
       <Modal show={show} onHide={props.close} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Emprestar Livro</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Autocomplete
+            onChange={(event, value) => {
+              if(value != null){
+                setCriancaInputValue(value.id);
+              }else{
+                setCriancaInputValue(value);
+              }
+            }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             options={criancasFormatadas}
             sx={{ width: 470 }}
             className="m-auto"
             renderInput={(params) => <TextField {...params} label="Criança" />}
           />
           <Autocomplete
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            onChange={(event, value) => {
+              if(value != null){
+                setLivroInputValue(value.id);
+              }else{
+                setLivroInputValue(value);
+              }
+            }}
             options={livrosFormatados}
             sx={{ width: 470 }}
             className="m-auto mt-2"
             renderInput={(params) => <TextField {...params} label="Livro" />}
           />
           <TextareaAutosize
+            value = {detalheInputValue}
+            onChange={(event) => setDetalheInputValue(event.target.value)/*setDetalheInputValue(value)*/}
             aria-label="empty textarea"
             className="mt-2"
             placeholder="Detalhes"
@@ -68,7 +119,7 @@ export default function EmprestimoModal(props) {
           <Button variant="secondary" onClick={props.close}>
             Fechar
           </Button>
-          <Button variant="primary" onClick={null}>
+          <Button variant="primary" onClick={makeNew}>
             Salvar
           </Button>
         </Modal.Footer>
