@@ -126,6 +126,6 @@ export class EmprestimoService {
     }
     emprestimo.ativo = 'N' 
     await this.emprestimoRepository.save(emprestimo);
-    return 'OK'
+    return {"message":"ok"}
   }
 }

@@ -90,7 +90,13 @@ export class MultaService {
     return this.multaRepository.find();
   }
 
-  
+  findAllAtivas(){
+    return this.multaRepository.find({ativa:'S'})
+  }
+
+  findAllInativas(){
+    return this.multaRepository.find({ativa:'N'})
+  }
 
   findOne(id: number) {
     return this.multaRepository.findOne(id);

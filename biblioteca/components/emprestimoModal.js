@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import { useState } from "react";
+import * as toastr from 'toastr'
 
 export default function EmprestimoModal(props) {
   const show = props.show;
@@ -23,9 +24,9 @@ export default function EmprestimoModal(props) {
     body: JSON.stringify({
       "access_token": access_token,
       "data": {
-        "idlivro":livroInputValue,
-        "idcrianca":criancaInputValue,
-        "estado_livro":detalheInputValue
+        "idlivro": livroInputValue,
+        "idcrianca": criancaInputValue,
+        "estado_livro": detalheInputValue
       }
     }),
   }
@@ -39,15 +40,21 @@ export default function EmprestimoModal(props) {
       body: JSON.stringify({
         "access_token": access_token,
         "data": {
-          "idlivro":livroInputValue,
-          "idcrianca":criancaInputValue,
-          "estado_livro":detalheInputValue
+          "idlivro": livroInputValue,
+          "idcrianca": criancaInputValue,
+          "estado_livro": detalheInputValue
         }
       }),
     }
-    console.log(addOptions)
     let req = await fetch("api/emprestimos/add", addOptions);
-    console.log(req);
+    if (req.status != 200) {
+      let msg = await req.text()
+      console.log(msg)
+      toastr.error(msg, "Erro")
+    } else {
+      toastr.success('Empréstimo executado com sucesso', 'Sucesso')
+      props.close();
+    }
   }
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
@@ -71,7 +78,6 @@ export default function EmprestimoModal(props) {
   }
   return (
     <>
-    {console.log(livroInputValue, criancaInputValue, detalheInputValue)}
       <Modal show={show} onHide={props.close} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Emprestar Livro</Modal.Title>
@@ -79,9 +85,9 @@ export default function EmprestimoModal(props) {
         <Modal.Body>
           <Autocomplete
             onChange={(event, value) => {
-              if(value != null){
+              if (value != null) {
                 setCriancaInputValue(value.id);
-              }else{
+              } else {
                 setCriancaInputValue(value);
               }
             }}
@@ -94,9 +100,9 @@ export default function EmprestimoModal(props) {
           <Autocomplete
             isOptionEqualToValue={(option, value) => option.id === value.id}
             onChange={(event, value) => {
-              if(value != null){
+              if (value != null) {
                 setLivroInputValue(value.id);
-              }else{
+              } else {
                 setLivroInputValue(value);
               }
             }}
@@ -106,8 +112,8 @@ export default function EmprestimoModal(props) {
             renderInput={(params) => <TextField {...params} label="Livro" />}
           />
           <TextareaAutosize
-            value = {detalheInputValue}
-            onChange={(event) => setDetalheInputValue(event.target.value)/*setDetalheInputValue(value)*/}
+            value={detalheInputValue}
+            onChange={(event) => setDetalheInputValue(event.target.value)}
             aria-label="empty textarea"
             className="mt-2"
             placeholder="Detalhes"

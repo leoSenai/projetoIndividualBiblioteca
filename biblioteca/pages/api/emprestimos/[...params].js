@@ -14,7 +14,6 @@ const renew = async (token, data) => {
 }
 
 const add = async (token, data) => {
-    console.log(data)
     const options = {
         method: 'POST',
         headers: {
@@ -25,6 +24,21 @@ const add = async (token, data) => {
     };
     return new Promise(async (resolve, reject) => {
         let response = await fetch('http://localhost:3333/emprestimo/', options);
+        return resolve(response.json());
+    });
+}
+
+const giveBack = (token, id) => {
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    };
+    return new Promise(async (resolve, reject) => {
+        let response = await fetch(`http://localhost:3333/emprestimo/encerrar/${id}`, options);
+        console.log(response);
         return resolve(response.json());
     });
 }
@@ -55,5 +69,14 @@ export default async function handler(req, res) {
         }
     }
 
-
+    if(params[0] == 'close'){
+        const {data} = req.body;
+        const fechar = await giveBack(access_token, data.idemprestimo);
+        console.log(fechar)
+        if(fechar.statusCode === 400) {
+            res.status(400).send(fechar.message)
+        }else{
+            res.status(200).send();
+        }
+    }
 }

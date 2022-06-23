@@ -3,7 +3,6 @@ import useSWR from 'swr'
 import { Table } from "react-bootstrap";
 import CachedIcon from '@mui/icons-material/Cached';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import * as toastr from 'toastr'
 
 export default function ListaEmprestimosAtivos(props) {
@@ -52,12 +51,27 @@ export default function ListaEmprestimosAtivos(props) {
         }
     }
 
-    const returnHandle = (id) => {
-        console.log(id + "Retornar");
-    }
-
-    const penaltyHandle = (id) => {
-        console.log(id + "Multa")
+    const returnHandle = async (id) => {
+        let returnOps = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "access_token": access_token,
+                "data": {
+                    "idemprestimo": id,
+                }
+            }),
+        }
+        let close = await fetch('api/emprestimos/close', returnOps);
+        if (close.status != 200) {
+            let msg = await close.text()
+            console.log(msg)
+            toastr.error(msg, "Erro")
+        } else {
+            toastr.success('Empréstimo encerrado com sucesso', 'Sucesso')
+        }
     }
 
     const showData = (data) => {
@@ -78,9 +92,6 @@ export default function ListaEmprestimosAtivos(props) {
                             </div>
                             <div className="mx-3" title="Encerrar Empréstimo" onClick={() => returnHandle(element.idemprestimo)}>
                                 <DownloadDoneIcon />
-                            </div>
-                            <div title="Multar" className="mx-3" onClick={() => penaltyHandle(element.idemprestimo)}>
-                                <PriorityHighIcon />
                             </div>
                         </td>
                     </tr>

@@ -20,6 +20,16 @@ export class MultaController {
     return this.multaService.findAll();
   }
 
+  @Get('ativas')
+  findAllAtivas(){
+    return this.multaService.findAllAtivas();
+  }
+
+  @Get('inativas')
+  findAllInativas(){
+    return this.multaService.findAllInativas();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.multaService.findOne(+id);
