@@ -12,8 +12,8 @@ export class MultaService {
   constructor(
     @InjectRepository(Multa) private multaRepository: Repository<Multa>, 
     @Inject(forwardRef(() => EmprestimoService))
+    private emprestimoService: EmprestimoService,
     private connection : Connection,
-    private emprestimoService: EmprestimoService
   ) { }
 
   dateDiff(d2: string) {
@@ -96,6 +96,23 @@ export class MultaService {
 
   findAllInativas(){
     return this.multaRepository.find({ativa:'N'})
+  }
+
+  async ativasList() {
+
+    let query = this.connection.createQueryRunner();
+    await query.connect();
+    let disponivel = await query.query(`SELECT c.cpf, m.* FROM multa m INNER JOIN crianca c ON m.idcrianca=c.idcrianca WHERE m.ativa='S';`);
+    await query.release();
+    return disponivel;
+  }
+
+  async inativasList() {
+    let query = this.connection.createQueryRunner();
+    await query.connect();
+    let disponivel = await query.query(`SELECT c.cpf, m.* FROM multa m INNER JOIN crianca c ON m.idcrianca=c.idcrianca WHERE m.ativa='N';`);
+    await query.release();
+    return disponivel;
   }
 
   findOne(id: number) {

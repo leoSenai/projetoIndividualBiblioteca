@@ -1,11 +1,12 @@
 import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import { Table } from "react-bootstrap";
-import CachedIcon from '@mui/icons-material/Cached';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
+import InfoIcon from '@mui/icons-material/Info';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import * as toastr from 'toastr'
 
-export default function ListaMultasAtivas () {
+export default function ListaMultasInativas () {
     // @refresh reset
 
     const cookies = new Cookies()
@@ -20,7 +21,7 @@ export default function ListaMultasAtivas () {
         }),
     }
     const fetcher = (...args) => fetch(...args).then((res) => res.json())
-    const { data, error } = useSWR(['/api/multas/ativas', options], fetcher, { refreshInterval: 500 })
+    const { data, error } = useSWR(['/api/multas/inativas', options], fetcher, { refreshInterval: 500 })
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
 
@@ -54,7 +55,10 @@ export default function ListaMultasAtivas () {
                         <td>{dataQuitacao.toLocaleDateString('pt-BR')}</td>
                         <td className="ta-center">
                             <div className="mx-3" title="Encerrar Empréstimo" onClick={() => returnHandle(element.idemprestimo)}>
-                                <DownloadDoneIcon />
+                                <InfoIcon/>
+                            </div>
+                            <div className="mx-3" title="Encerrar Empréstimo" onClick={() => returnHandle(element.idemprestimo)}>
+                                <ReceiptIcon/>
                             </div>
                         </td>
                     </tr>
@@ -73,7 +77,7 @@ export default function ListaMultasAtivas () {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th className="text-center" colSpan={6}>Ativas</th>
+                        <th className="text-center" colSpan={6}>Inativas</th>
                     </tr>
                     <tr>
                         <th>CPF Criança</th>
