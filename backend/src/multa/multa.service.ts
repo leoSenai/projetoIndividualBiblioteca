@@ -135,6 +135,14 @@ export class MultaService {
     return this.update(id, {ativa:'N'})
   }
 
+  async verificarTempo(){
+    let query = this.connection.createQueryRunner();
+    await query.connect();
+    let disponivel = await query.query(`SELECT * FROM multa WHERE current_date() > data_quitacao AND ativa = 'S';`);
+    await query.release();
+    return disponivel;
+  }
+
   remove(id: number) {
     return this.multaRepository.delete(id);
   }

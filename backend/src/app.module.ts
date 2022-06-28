@@ -9,6 +9,9 @@ import { ConfigModule } from '@nestjs/config';
 import { CriancaModule } from './crianca/crianca.module';
 import { EmprestimoModule } from './emprestimo/emprestimo.module';
 import { AuthModule } from './auth/auth.module';
+import { TasksService } from './tasks/tasks.service';
+import { TasksModule } from './tasks/tasks.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,12 +27,14 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.MYSQL_DB,
       autoLoadEntities: true,
     }),
+    ScheduleModule.forRoot(),
     UsuarioModule,
     LivroModule,
     MultaModule,
     CriancaModule,
     EmprestimoModule,
-    AuthModule
+    AuthModule,
+    TasksModule
   ],
   controllers: [AppController],
   providers: [AppService],

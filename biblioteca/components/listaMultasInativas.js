@@ -3,6 +3,8 @@ import useSWR from 'swr'
 import { Table } from "react-bootstrap";
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import InfoIcon from '@mui/icons-material/Info';
+import ReactPDF from '@react-pdf/renderer';
+import ReciboMulta from './reciboMulta';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import * as toastr from 'toastr'
 
@@ -30,6 +32,13 @@ export default function ListaMultasInativas () {
         currency: 'BRL',
       });
 
+    const infoHandle = (idmulta) => {
+    }
+    
+    const receiptHandle = (idmulta) => {
+        ReactPDF.renderToFile(<ReciboMulta />, `${__dirname}/example.pdf`);
+    }
+
     const showData = (data) => {
         let dadosFormatados = []
         data.dados.forEach((element) => {
@@ -54,10 +63,10 @@ export default function ListaMultasInativas () {
                         <td>{formatter.format(element.valor)}</td>
                         <td>{dataQuitacao.toLocaleDateString('pt-BR')}</td>
                         <td className="ta-center">
-                            <div className="mx-3" title="Encerrar Empréstimo" onClick={() => returnHandle(element.idemprestimo)}>
+                            <div className="mx-3" title="Informações" onClick={() => infoHandle(element.idmulta)}>
                                 <InfoIcon/>
                             </div>
-                            <div className="mx-3" title="Encerrar Empréstimo" onClick={() => returnHandle(element.idemprestimo)}>
+                            <div className="mx-3" title="Visualizar Recibo" onClick={() => receiptHandle(element.idmulta)}>
                                 <ReceiptIcon/>
                             </div>
                         </td>
