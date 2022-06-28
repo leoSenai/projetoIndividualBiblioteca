@@ -1,11 +1,9 @@
 import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import { Table } from "react-bootstrap";
-import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import InfoIcon from '@mui/icons-material/Info';
-import ReactPDF from '@react-pdf/renderer';
-import ReciboMulta from './reciboMulta';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import { jsPDF } from 'jspdf'
 import * as toastr from 'toastr'
 
 export default function ListaMultasInativas () {
@@ -35,8 +33,25 @@ export default function ListaMultasInativas () {
     const infoHandle = (idmulta) => {
     }
     
-    const receiptHandle = (idmulta) => {
-        ReactPDF.renderToFile(<ReciboMulta />, `${__dirname}/example.pdf`);
+    const receiptHandle = async (idmulta) => {
+        let multa = (data.dados.filter(el => el.idmulta === idmulta))[0];
+        let corpoMulta = `A biblioteca da ONG Sala Arco-Iris declara que o usuário, portador do CPF: ${multa.cpf}, quitou sua multa referente ao numero de identificação ${multa.idmulta}. Multa esta gerada pelo motivo de ${multa.tipo} na data ${multa.data_inicio}, com termino no dia ${multa.data_quitacao}.`
+        const rec = new jsPDF();
+        rec.text(rec.splitTextToSize(corpoMulta, 200), 10, 10);
+        
+        rec.save("recibo.pdf");
+            // let addOps = {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         "access_token": access_token,
+            //     }),
+            // }
+    
+            // let renovar = await fetch(`api/multas/pdf/${idmulta}`, addOps);
+            // console.log(renovar);
     }
 
     const showData = (data) => {
