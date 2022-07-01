@@ -4,7 +4,6 @@ import { Table } from "react-bootstrap";
 import InfoIcon from '@mui/icons-material/Info';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { jsPDF } from 'jspdf'
-import * as toastr from 'toastr'
 
 export default function ListaMultasInativas () {
     // @refresh reset
@@ -30,28 +29,37 @@ export default function ListaMultasInativas () {
         currency: 'BRL',
       });
 
-    const infoHandle = (idmulta) => {
-    }
     
     const receiptHandle = async (idmulta) => {
         let multa = (data.dados.filter(el => el.idmulta === idmulta))[0];
-        let corpoMulta = `A biblioteca da ONG Sala Arco-Iris declara que o usuário, portador do CPF: ${multa.cpf}, quitou sua multa referente ao numero de identificação ${multa.idmulta}. Multa esta gerada pelo motivo de ${multa.tipo} na data ${multa.data_inicio}, com termino no dia ${multa.data_quitacao}.`
-        const rec = new jsPDF();
-        rec.text(rec.splitTextToSize(corpoMulta, 200), 10, 10);
-        
+        //let imagemCabecalho = fs.readFileSync('../public/logo.jpg')
+        let cpf = multa.cpf.substring(0,3)+'.'+ multa.cpf.substring(3,6)+'.'+ multa.cpf.substring(6,9)+'-'+ multa.cpf.substring(9,11);
+        let tipo = "";
+        if(multa.tipo == 'A'){
+            tipo = "Atraso";
+        }else if(multa.tipo == 'R'){
+            tipo = "Razura";
+        }else{
+            tipo = "Destruição";
+        }
+        let data_inicio = (new Date(multa.data_inicio)).toLocaleDateString('pt-BR')
+        let data_quitacao = (new Date(multa.data_quitacao)).toLocaleDateString('pt-BR')
+        console.log(cpf)
+        let corpoMulta = `A biblioteca da ONG Sala Arco-Iris declara que o usuário, portador do CPF: ${cpf}, quitou sua multa referente ao numero de identificação ${multa.idmulta}. Multa esta gerada pelo motivo de ${tipo} na data ${data_inicio}, com termino no dia ${data_quitacao}.`
+        const rec = new jsPDF({
+            unit:'cm',
+            format:'a5',
+            orientation:'l'
+        });
+        let aa = new Image();
+        aa.src = './logo.jpg';
+        console.log(aa);
+        rec.setFont('arial')
+        rec.setFontSize(14)
+        rec.addImage(aa,'JPEG', 8.5,0.1, 4, 3);
+        rec.text(rec.splitTextToSize(corpoMulta, 19), 1, 4);
+        rec.text(rec.splitTextToSize("Assinatura Bibliotecario(a):___________________________________________",19),1,8)
         rec.save("recibo.pdf");
-            // let addOps = {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         "access_token": access_token,
-            //     }),
-            // }
-    
-            // let renovar = await fetch(`api/multas/pdf/${idmulta}`, addOps);
-            // console.log(renovar);
     }
 
     const showData = (data) => {
@@ -78,9 +86,6 @@ export default function ListaMultasInativas () {
                         <td>{formatter.format(element.valor)}</td>
                         <td>{dataQuitacao.toLocaleDateString('pt-BR')}</td>
                         <td className="ta-center">
-                            <div className="mx-3" title="Informações" onClick={() => infoHandle(element.idmulta)}>
-                                <InfoIcon/>
-                            </div>
                             <div className="mx-3" title="Visualizar Recibo" onClick={() => receiptHandle(element.idmulta)}>
                                 <ReceiptIcon/>
                             </div>

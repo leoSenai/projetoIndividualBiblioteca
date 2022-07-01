@@ -48,7 +48,7 @@ export default function Login() {
             <div className="m-auto mw-400">
                 <form onSubmit={handleSubmit}>
                     <Image src={logo} alt="logo-arco-iris" height="150" width="200" />
-                    <h2 className="mt-2">Biblioteca Sala Arco-Iris</h2>
+                    <h2 className="mt-2">Biblioteca Sala Arco-Íris</h2>
                     <div className="border p-3">
                         <div className="form-floating m-auto mb-3">
                             <input type="text" className="form-control " id="usuario" placeholder="Usuário" required></input>

@@ -5,7 +5,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import * as toastr from 'toastr'
 
-export default function ListaMultasAtivas () {
+export default function ListaMultasAtivas() {
     // @refresh reset
 
     const cookies = new Cookies()
@@ -27,41 +27,62 @@ export default function ListaMultasAtivas () {
     let formatter = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
-      });
+    });
+
+    const handlePayOff = async (idmulta) => {
+        let addOps = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "access_token": access_token,
+            }),
+        }
+
+        let quitar = await fetch(`api/multas/${idmulta}`, addOps);
+        if(quitar.status != 200) {
+            let msg = await quitar.text()
+            console.log(msg)
+            toastr.error(msg, "Erro")
+        } else {
+            toastr.success('Multa quitada com sucesso', 'Sucesso')
+        }
+    }
 
     const showData = (data) => {
         let dadosFormatados = []
         data.dados.forEach((element) => {
 
-                let dataQuitacao = new Date(element.data_quitacao);
-                let dataAplicacao = new Date(element.data_inicio);
-                let tipo = "";
-                if(element.tipo == "A"){
-                    tipo = "Atraso";
-                }
-                if(element.tipo == "D"){
-                    tipo = "Destruição"
-                }
-                if(element.tipo == "R"){
-                    tipo = "Rasura";
-                }
-                dadosFormatados.push(
-                    <tr key={element.idmulta}>
-                        <td>{element.cpf}</td>
-                        <td>{dataAplicacao.toLocaleDateString('pt-BR')}</td>
-                        <td>{tipo}</td>
-                        <td>{formatter.format(element.valor)}</td>
-                        <td>{dataQuitacao.toLocaleDateString('pt-BR')}</td>
-                        <td className="ta-center">
-                            <div className="mx-3" title="Encerrar Empréstimo" onClick={() => returnHandle(element.idemprestimo)}>
-                                <DownloadDoneIcon />
-                            </div>
-                        </td>
-                    </tr>
-                )
+            let dataQuitacao = new Date(element.data_quitacao);
+            let dataAplicacao = new Date(element.data_inicio);
+            let tipo = "";
+            if (element.tipo == "A") {
+                tipo = "Atraso";
+            }
+            if (element.tipo == "D") {
+                tipo = "Destruição"
+            }
+            if (element.tipo == "R") {
+                tipo = "Rasura";
+            }
+            dadosFormatados.push(
+                <tr key={element.idmulta}>
+                    <td>{element.cpf}</td>
+                    <td>{dataAplicacao.toLocaleDateString('pt-BR')}</td>
+                    <td>{tipo}</td>
+                    <td>{formatter.format(element.valor)}</td>
+                    <td>{dataQuitacao.toLocaleDateString('pt-BR')}</td>
+                    <td className="ta-center">
+                        <div className="mx-3" title="Encerrar Empréstimo" onClick={() => handlePayOff(element.idmulta)}>
+                            <DownloadDoneIcon />
+                        </div>
+                    </td>
+                </tr>
+            )
         });
-        if(dadosFormatados.length == 0){
-            return(<tr>
+        if (dadosFormatados.length == 0) {
+            return (<tr>
                 <td colSpan={5} className="text-center">Nenhuma Multa Ativa</td>
             </tr>)
         }
