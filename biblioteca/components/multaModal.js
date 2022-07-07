@@ -6,6 +6,8 @@ import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import { useState } from "react";
 import * as toastr from 'toastr'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function MultaModal(props) {
   const show = props.show;
@@ -14,7 +16,7 @@ export default function MultaModal(props) {
   const [motivoInputValue, setMotivoInputValue] = useState("");
   const [valorInputValue, setValorInputValue] = useState("");
   const [tipo, setTipo] = useState("");
-  const [dataDevolucao, setDataDevolucao] = useState("");
+  const [dataDevolucao, setDataDevolucao] = useState(new Date);
 
   const cookies = new Cookies()
   const access_token = cookies.get('access_token');
@@ -91,24 +93,23 @@ export default function MultaModal(props) {
             className="m-auto"
             renderInput={(params) => <TextField {...params} label="Criança" />}
           />
-          <TextField className="mtr-2" style={{"width":470}} label="Motivo" onChange={(event) => {setMotivoInputValue(event.target.value)}} />
-          <FormControl className="mt-2">
-            <InputLabel id="simple-select-label">Tipo</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={tipo}
-              label="Tipo"
-              style={{width:200}}
-              onChange={(event) => { setTipo(event.target.value); }}
-            >
-              <MenuItem value='A'>Atraso</MenuItem>
-              <MenuItem value='R'>Rasura</MenuItem>
-              <MenuItem value='D'>Destruição</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField className="mt-2"  label="Valor" onChange={(event) => {setValorInputValue(event.target.value)}} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
-          <Input type="date"></Input>
+            <TextField className="mt-2" style={{"width":470}} label="Motivo" onChange={(event) => {setMotivoInputValue(event.target.value)}} />
+            <FormControl className="mtr-2">
+              <InputLabel id="simple-select-label">Tipo</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={tipo}
+                label="Tipo"
+                style={{width:200}}
+                onChange={(event) => { setTipo(event.target.value); }}
+                >
+                <MenuItem value='A'>Atraso</MenuItem>
+                <MenuItem value='R'>Rasura</MenuItem>
+                <MenuItem value='D'>Destruição</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField className="mt-2"  label="Valor" onChange={(event) => {setValorInputValue(event.target.value)}} inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
         </Modal.Body> 
         <Modal.Footer>
           <Button variant="secondary" onClick={props.close}>

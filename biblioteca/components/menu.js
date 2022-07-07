@@ -19,14 +19,7 @@ const Menu = () => {
                                     </NavDropdown>
                                     <Nav.Link href="/emprestimo">Empréstimos</Nav.Link>
                                     <Nav.Link href="/multa">Multas</Nav.Link>
-                                    <NavDropdown
-                                        id="nav-dropdown-dark-example"
-                                        title="Relatórios"
-                                        menuVariant="dark"
-                                    >
-                                        <NavDropdown.Item href="/livros">Livros</NavDropdown.Item>
-                                        <NavDropdown.Item href="/crianca">Multas</NavDropdown.Item>
-                                    </NavDropdown>
+                                    <Nav.Link href="/resumo">Relátorios</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                 </Container>
