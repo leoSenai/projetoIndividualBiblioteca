@@ -46,7 +46,8 @@ export default function MultaModal(props) {
           "tipo": tipo,
           "motivo": motivoInputValue,
           "idcrianca": criancaInputValue,
-          "dataDevolucao": dataDevolucao
+          "dataDevolucao": dataDevolucao,
+          "ativa": "S"
         }
       }),
     }
@@ -76,7 +77,7 @@ export default function MultaModal(props) {
     <>
       <Modal show={show} onHide={props.close} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Emprestar Livro</Modal.Title>
+          <Modal.Title>Aplicar Multa</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Autocomplete

@@ -64,7 +64,9 @@ export class EmprestimoService {
 
     let emprestados = await this.emprestimoRepository.count({idcrianca:idcrianca,ativo:'S'});
     if(emprestados >= 2){
-     
+      let ex = new HttpException("Criança excedeu o limite de livros",400);
+      ex.message = "Criança excedeu o limite de livros";
+      throw ex;
     }
     
     let query = this.connection.createQueryRunner();

@@ -23,7 +23,7 @@ export default function ListaEmprestimosAtivos(props) {
     const { data, error } = useSWR(['/api/emprestimos/all', options], fetcher, { refreshInterval: 500 })
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
-
+    console.log(data);
     const renewHandle = async (id, idcrianca, idlivro) => {
         let addOps = {
             method: 'POST',

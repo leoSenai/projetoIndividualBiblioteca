@@ -83,7 +83,7 @@ export default function ListaMultasAtivas() {
         });
         if (dadosFormatados.length == 0) {
             return (<tr>
-                <td colSpan={5} className="text-center">Nenhuma Multa Ativa</td>
+                <td colSpan={6} className="text-center">Nenhuma Multa Ativa</td>
             </tr>)
         }
         return dadosFormatados;
