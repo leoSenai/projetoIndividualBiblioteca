@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { TasksService } from './tasks/tasks.service';
 import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { DadosModule } from './dados/dados.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     CriancaModule,
     EmprestimoModule,
     AuthModule,
-    TasksModule
+    TasksModule,
+    DadosModule
   ],
   controllers: [AppController],
   providers: [AppService],
