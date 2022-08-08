@@ -14,9 +14,13 @@ export class DadosService {
         let multas = await query.query(`SELECT COUNT(*) as total, tipo FROM multa WHERE ativa='S' GROUP BY tipo;`);
         let emprestimos =  await query.query(`SELECT COUNT(*) as total FROM emprestimo WHERE ativo = 'S';`);
         let criancas = await query.query(`SELECT COUNT(*) as total FROM crianca`);
+        let contadores = [criancas, emprestimos, multas]
+        multas = await query.query(`select count(*) as total, month(data_inicio) as mes from multa group by month(data_inicio) order by mes asc;`)
+        emprestimos = await query.query(`select count(*) as total, month(data_inicio) as mes from emprestimo group by month(data_inicio) order by mes asc;`);
         await query.release();
-        let contadores = [multas, emprestimos, criancas]
-        
-        multas = await query.query(`select count(*) as total from multa group by month(data_inicio);`)
+        return {
+            "contadores": contadores,
+            "porMes": [emprestimos, multas]
+        }
     }
 }
