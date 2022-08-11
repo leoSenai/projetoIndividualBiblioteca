@@ -22,7 +22,7 @@ export default function Contadores(props) {
     if (error) return <div>Failed to load</div>
     if (!data) return <div>Loading...</div>
 
-    console.log(data);
+    console.log(data.dados);
 
     return <>
         <div className="ta-center">
@@ -59,7 +59,7 @@ export default function Contadores(props) {
             </Box>
         </div>
         <div className="ta-center mt-4">
-            <BarChart width={1200} height={300} data={data}>
+            <BarChart width={1200} height={300} data={data.dados["porMes"]}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
