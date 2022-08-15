@@ -11,12 +11,12 @@ export default function Login() {
     const cookies = new Cookies();
     let spinner = "spinner-border text-light"
     const handleSubmit = async (event) => {
-        
+
         event.preventDefault();
-        
+
         let user = event.target.querySelector('#usuario').value;
         let pass = event.target.querySelector('#senha').value;
-        
+
         const pkt = JSON.stringify({
             "username": user,
             "password": pass
@@ -25,19 +25,19 @@ export default function Login() {
         const options = {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: pkt,
-          }
-        
-        const response = await fetch('api/login',options);
+        }
+
+        const response = await fetch('api/login', options);
         const result = await response.json();
         console.log(result)
-        if(response.status == 200){
+        if (response.status == 200) {
             cookies.set('access_token', result.data);
             router.push('/dash');
-        }else{
-            toastr.error("Login ou Senha Invalidos","Erro");
+        } else {
+            toastr.error("Login ou Senha Invalidos", "Erro");
         }
 
 

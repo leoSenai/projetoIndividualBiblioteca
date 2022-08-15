@@ -51,7 +51,19 @@ a {
   font: 32px Arial, sans-serif;
 }
 
-/* .rig div{
+.resumeNumberTitle{
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.resumeNumber{
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+
+}
+  /* .rig div{
   float: left;
   margin-right:2rem;
 } */

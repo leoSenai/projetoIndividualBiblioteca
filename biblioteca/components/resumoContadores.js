@@ -2,7 +2,7 @@ import Cookies from "universal-cookie";
 import useSWR from 'swr'
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar} from 'recharts';
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 
 export default function Contadores(props) {
     const cookies = new Cookies()
@@ -38,21 +38,27 @@ export default function Contadores(props) {
 
                 }}
             >
-                <Paper elevation={3} >
-                    Crianças:
-                    <div className="circulo">
+                <Paper elevation={3}>
+                    <div className="resumeNumberTitle">
+                        Crianças:
+                    </div>
+                    <div className="resumeNumber" style={{"color":"blue"}}>
                         {data.dados.contadores[0].length != 0 ? data.dados.contadores[0][0].total : 0}
                     </div>
                 </Paper>
-                <Paper elevation={3} >
-                    Empréstimos:
-                    <div className="circulo">
+                <Paper elevation={3}>
+                    <div className="resumeNumberTitle">
+                        Empréstimos:
+                    </div>
+                    <div className="resumeNumber"  style={{"color":"#198c19"}}>
                         {data.dados.contadores[1].length != 0 ? data.dados.contadores[1][0].total : 0}
                     </div>
                 </Paper>
-                <Paper elevation={3} >
-                    Multas:
-                    <div className="circulo">
+                <Paper elevation={3}>
+                    <div className="resumeNumberTitle">
+                        Multas:
+                    </div>
+                    <div className="resumeNumber" style={{"color":"#ff0000"}}>
                         {data.dados.contadores[2].length != 0 ? data.dados.contadores[2][0].total : 0}
                     </div>
                 </Paper>
@@ -65,8 +71,8 @@ export default function Contadores(props) {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
+                <Bar dataKey="emprestimos" fill="#198c19" />
+                <Bar dataKey="multas" fill="#ff0000" />
             </BarChart>
         </div>
     </>

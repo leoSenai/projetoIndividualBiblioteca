@@ -12,7 +12,7 @@ export class AuthService {
 
     async validateUser(matricula:number, pass: string){
         const user = await this.usuarioService.findOne(matricula);
-        if(user && bcrypt.compare(pass, user.senha)){
+        if(user && await bcrypt.compare(pass, user.senha)){
             const {senha, ...result} = user;
             return result;
         }

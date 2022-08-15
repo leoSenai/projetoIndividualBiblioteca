@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/globals.css'
 import 'toastr/build/toastr.css'
+import { RouteGuard } from '../components/routeGuard';
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 
@@ -10,7 +11,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Component {...pageProps} />
+      <RouteGuard>
+        <Component {...pageProps} />
+      </RouteGuard>
     </>
 
   )

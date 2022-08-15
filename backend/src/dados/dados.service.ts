@@ -12,79 +12,88 @@ export class DadosService {
         let query = this.connection.createQueryRunner();
         await query.connect();
         let multas = await query.query(`SELECT COUNT(*) as total, tipo FROM multa WHERE ativa='S' GROUP BY tipo;`);
-        let emprestimos =  await query.query(`SELECT COUNT(*) as total FROM emprestimo WHERE ativo = 'S';`);
+        let emprestimos = await query.query(`SELECT COUNT(*) as total FROM emprestimo WHERE ativo = 'S';`);
         let criancas = await query.query(`SELECT COUNT(*) as total FROM crianca`);
         let contadores = [criancas, emprestimos, multas]
         multas = await query.query(`select date(data_inicio) as dia from multa where data_inicio >  DATE_SUB(now(), INTERVAL 12 MONTH);`)
         emprestimos = await query.query(`select date(data_inicio) as dia from emprestimo where data_inicio >  DATE_SUB(now(), INTERVAL 12 MONTH);`);
         await query.release();
-
+        
         let grafico = [
             {
-                "name":"Janeiro",
-                "multas":"",
-                "emprestimos":""
+                "name": "Janeiro",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Fevereiro",
-                "multas":"",
-                "emprestimos":""
+                "name": "Fevereiro",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Março",
-                "multas":"",
-                "emprestimos":""
+                "name": "Março",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Abril",
-                "multas":"",
-                "emprestimos":""
+                "name": "Abril",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Maio",
-                "multas":"",
-                "emprestimos":""
+                "name": "Maio",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Junho",
-                "multas":"",
-                "emprestimos":""
+                "name": "Junho",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Julho",
-                "multas":"",
-                "emprestimos":""
+                "name": "Julho",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Agosto",
-                "multas":"",
-                "emprestimos":""
+                "name": "Agosto",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Setembro",
-                "multas":"",
-                "emprestimos":""
+                "name": "Setembro",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Outubro",
-                "multas":"",
-                "emprestimos":""
+                "name": "Outubro",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Novembro",
-                "multas":"",
-                "emprestimos":""
+                "name": "Novembro",
+                "multas": 0,
+                "emprestimos": 0
             },
             {
-                "name":"Dezembro",
-                "multas":"",
-                "emprestimos":""
+                "name": "Dezembro",
+                "multas": 0,
+                "emprestimos": 0
             },
         ]
-
+        for (let i = 0; i < emprestimos.length; i++) {
+            let dataEvento = new Date(emprestimos[i].dia);
+            let index = dataEvento.getMonth()
+            grafico[index].emprestimos++;
+        }
+        for (let i = 0; i < multas.length; i++) {
+            let dataEvento = new Date(multas[i].dia);
+            let index = dataEvento.getMonth()
+            grafico[index].multas++;
+        }
         return {
             "contadores": contadores,
-            "porMes": [emprestimos, multas]
+            "porMes": grafico,
         }
     }
 }
