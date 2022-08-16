@@ -18,7 +18,7 @@ export class DadosService {
         multas = await query.query(`select date(data_inicio) as dia from multa where data_inicio >  DATE_SUB(now(), INTERVAL 12 MONTH);`)
         emprestimos = await query.query(`select date(data_inicio) as dia from emprestimo where data_inicio >  DATE_SUB(now(), INTERVAL 12 MONTH);`);
         await query.release();
-        
+
         let grafico = [
             {
                 "name": "Janeiro",
