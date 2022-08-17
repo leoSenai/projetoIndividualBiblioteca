@@ -42,7 +42,7 @@ export default function Contadores(props) {
                     <div className="resumeNumberTitle">
                         Crianças:
                     </div>
-                    <div className="resumeNumber" style={{ "color": "blue" }}>
+                    <div className="resumeNumber" style={{ "color": "blue" }} title= "Cadastradas">
                         {data.dados.contadores[0].length != 0 ? data.dados.contadores[0][0].total : 0}
                     </div>
                 </Paper>
@@ -50,7 +50,7 @@ export default function Contadores(props) {
                     <div className="resumeNumberTitle">
                         Empréstimos:
                     </div>
-                    <div className="resumeNumber" style={{ "color": "#198c19" }}>
+                    <div className="resumeNumber" style={{ "color": "#198c19" }}  title= "Ativos">
                         {data.dados.contadores[1].length != 0 ? data.dados.contadores[1][0].total : 0}
                     </div>
                 </Paper>
@@ -58,7 +58,7 @@ export default function Contadores(props) {
                     <div className="resumeNumberTitle">
                         Multas:
                     </div>
-                    <div className="resumeNumber" style={{ "color": "#ff0000" }}>
+                    <div className="resumeNumber" style={{ "color": "#ff0000" }}  title= "Ativas">
                         {data.dados.contadores[2].length != 0 ? data.dados.contadores[2][0].total : 0}
                     </div>
                 </Paper>

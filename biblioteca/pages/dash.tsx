@@ -1,13 +1,10 @@
 import Menu from '../components/menu'
-import Footer from '../components/footer'
+import Contadores from '../components/resumoContadores';
 const Dash = () => {
     return (
         <>
             <Menu/>
-                <div style={{textAlign: 'center',}}>
-                    <h1>Bem-Vindo</h1>
-                </div>
-            <Footer/>
+            <Contadores />
         </>
     )
 }

@@ -1,8 +1,8 @@
 import Menu from '../components/menu'
-import Contadores from '../components/resumoContadores'
+import CreateReport from '../components/geradorRelatório';
 export default function resumo() {
     return <>
         <Menu />
-        <Contadores />
+        <CreateReport />
     </>
 }
