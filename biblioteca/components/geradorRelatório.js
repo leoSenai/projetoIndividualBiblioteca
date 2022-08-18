@@ -31,8 +31,8 @@ export default function CreateReport(props) {
 
     return <>
         <div className='ta-center mt-4'>
-            <TextField type="date" label="Início do Período" defaultValue={dataInicio} onChange={(event) => setCorrectDataInicio(event)} />
-            <TextField type="date" className="" label="Fim do Período" defaultValue={dataFim} onChange={(event) => setCorrectDataFim(event)} />
+            <TextField type="date" className="me-3" label="Início do Período" defaultValue={dataInicio} onChange={(event) => setCorrectDataInicio(event)} />
+            <TextField type="date" className="me-3" label="Fim do Período" defaultValue={dataFim} onChange={(event) => setCorrectDataFim(event)} />
             <Button variant="primary" onClick={() => generateReport()}>Gerar</Button>
         </div>
 
