@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Autocomplete, TextField, Select, MenuItem, FormControl, Input } from "@mui/material";
 import * as toastr from 'toastr'
 import {Button} from 'react-bootstrap';
+import { jsPDF } from 'jspdf'
+
 export default function CreateReport(props) {
 
     let init = new Date()
@@ -19,15 +21,24 @@ export default function CreateReport(props) {
         setDataFim(event.target.value);
     }
 
-    const generateReport = () => {
+    const generateReport = async () => {
         let inicio= new Date(dataInicio);
         let fim = new Date(dataFim);
         if(inicio > fim){
             toastr.error("Período inválido", "Erro");
             return false;
         }
+        let report = new jsPDF({
+            orientation: 'p',
+            unit: 'cm',
+            format:'a4',
+        })
 
+        
+
+        report.save('teste.pdf')
     }
+
 
     return <>
         <div className='ta-center mt-4'>
