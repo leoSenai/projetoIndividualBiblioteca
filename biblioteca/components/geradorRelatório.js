@@ -28,15 +28,32 @@ export default function CreateReport(props) {
             toastr.error("Período inválido", "Erro");
             return false;
         }
-        let report = new jsPDF({
-            orientation: 'p',
-            unit: 'cm',
-            format:'a4',
-        })
+        let anterior = document.getElementById("toprint")
+        if(anterior != null){
+            document.body.removeChild(anterior);
+        }
+        let corpo = document.createElement('div')
+        corpo.className = 'toprint';
+        corpo.id = 'toprint';
+        /** HEADER **/
+        let header = document.createElement('div')
+        header.className = 'ta-center';
+        let img = document.createElement('img');
+        img.src = '../';
+        img.className = 'imgHeaderRelatorio'
+        let text = document.createElement('div');
+        text.innerHTML = `<p style="margin-top:0.5rem;">Relatório: Empréstimos e Multas</p>
+        <p>Periodo: ${inicio.toLocaleDateString('pt-BR')} - ${fim.toLocaleDateString('pt-BR')}</p>`;
+        header.appendChild(img);
+        header.appendChild(text);
+        corpo.appendChild(header);
+        document.body.appendChild(corpo);
+        window.print();
+        // frame.document.open();
+        // frame.document.write(corpo.innerHTML);
+        // frame.document.close();
+        // frame.focus();
 
-        
-
-        report.save('teste.pdf')
     }
 
 
@@ -46,6 +63,7 @@ export default function CreateReport(props) {
             <TextField type="date" className="me-3" label="Fim do Período" defaultValue={dataFim} onChange={(event) => setCorrectDataFim(event)} />
             <Button variant="primary" onClick={() => generateReport()}>Gerar</Button>
         </div>
+        <iframe id="frame" style={{height:"0px", width: "0px", position: "absolute"}}></iframe>
 
     </>
 }

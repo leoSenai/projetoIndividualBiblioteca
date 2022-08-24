@@ -63,7 +63,22 @@ a {
   font-weight: bold;
 
 }
-  /* .rig div{
-  float: left;
-  margin-right:2rem;
-} */
+
+.toprint{
+  visibility: hidden;
+}
+
+.imgHeaderRelatorio{
+  height:70px; 
+  width:70px;
+}
+
+@media print {
+  body *{
+    visibility: hidden;
+  }
+
+  .toprint *{
+    visibility: visible;
+  }
+}
