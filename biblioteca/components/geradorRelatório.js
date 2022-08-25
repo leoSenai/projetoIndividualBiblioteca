@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { Autocomplete, TextField, Select, MenuItem, FormControl, Input } from "@mui/material";
 import * as toastr from 'toastr'
 import {Button} from 'react-bootstrap';
-import { jsPDF } from 'jspdf'
+import Image from 'next/image'
+import logo2 from '../public/logo.jpg'
+import Cookies from "universal-cookie";
 
 export default function CreateReport(props) {
 
     let init = new Date()
     init.setHours(init.getHours() - 3);
     init = init.toISOString().split('T')[0];
+
+    const cookies = new Cookies()
+    const access_token = cookies.get('access_token');
 
     const [dataInicio, setDataInicio] = useState(init)
     const [dataFim, setDataFim] = useState(init)
@@ -22,37 +27,51 @@ export default function CreateReport(props) {
     }
 
     const generateReport = async () => {
+        console.log(dataInicio, dataFim);
+
         let inicio= new Date(dataInicio);
         let fim = new Date(dataFim);
+
+        inicio.setHours(inicio.getHours() + 3);
+        fim.setHours(fim.getHours() + 3);
+
+        let getOps = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "access_token": access_token,
+                "inicio": inicio,
+                "fim": fim
+            }),
+        }
+
+        let infos = await fetch(`api/dados/reportData`, getOps);
+        // if(quitar.status != 200) {
+        //     let msg = await quitar.text()
+        //     console.log(msg)
+        //     toastr.error(msg, "Erro")
+        // } else {
+        //     toastr.success('Multa quitada com sucesso', 'Sucesso')
+        // }
+        console.log(await infos.json());
+
         if(inicio > fim){
             toastr.error("Período inválido", "Erro");
             return false;
         }
-        let anterior = document.getElementById("toprint")
-        if(anterior != null){
-            document.body.removeChild(anterior);
-        }
-        let corpo = document.createElement('div')
-        corpo.className = 'toprint';
-        corpo.id = 'toprint';
+        // let anterior = document.getElementById("toprint")
+        // if(anterior != null){
+        //     document.body.removeChild(anterior);
+        // }
+        let corpo = document.getElementById("toprint")
         /** HEADER **/
-        let header = document.createElement('div')
-        header.className = 'ta-center';
-        let img = document.createElement('img');
-        img.src = '../';
-        img.className = 'imgHeaderRelatorio'
-        let text = document.createElement('div');
+        let text = document.getElementById("textoCabecalho")
         text.innerHTML = `<p style="margin-top:0.5rem;">Relatório: Empréstimos e Multas</p>
         <p>Periodo: ${inicio.toLocaleDateString('pt-BR')} - ${fim.toLocaleDateString('pt-BR')}</p>`;
-        header.appendChild(img);
-        header.appendChild(text);
-        corpo.appendChild(header);
-        document.body.appendChild(corpo);
         window.print();
-        // frame.document.open();
-        // frame.document.write(corpo.innerHTML);
-        // frame.document.close();
-        // frame.focus();
+    
 
     }
 
@@ -63,7 +82,12 @@ export default function CreateReport(props) {
             <TextField type="date" className="me-3" label="Fim do Período" defaultValue={dataFim} onChange={(event) => setCorrectDataFim(event)} />
             <Button variant="primary" onClick={() => generateReport()}>Gerar</Button>
         </div>
-        <iframe id="frame" style={{height:"0px", width: "0px", position: "absolute"}}></iframe>
+        <div className="toprint" id="toprint">
+            <div className="ta-center">
+                <Image src={logo2} alt="logo" width={70} height={70}/>   
+                <div id="textoCabecalho"></div>
+            </div>
+        </div>
 
     </>
 }

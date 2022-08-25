@@ -96,4 +96,14 @@ export class DadosService {
             "porMes": grafico,
         }
     }
+
+    async dadosRelatorio(inicio: string, fim: string){
+        let query = this.connection.createQueryRunner();
+        await query.connect();
+        let emprestimos = await query.query(`SELECT e.data_inicio, c.cpf, l.titulo FROM emprestimo e INNER JOIN crianca c ON e.idcrianca=c.idcrianca INNER JOIN livro l ON l.idlivro=e.idlivro WHERE data_inicio BETWEEN '${inicio}' AND '${fim}'`);
+        let multas= await query.query(`SELECT * FROM multa WHERE data_inicio BETWEEN '${inicio}' AND '${fim}'`);
+        await query.release();
+        return [emprestimos, multas];
+    }
+
 }
