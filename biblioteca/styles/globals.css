@@ -76,6 +76,11 @@ a {
   width:70px;
 }
 
+.ttitle{
+  font-weight: bold;
+  text-align: center;
+}
+
 @media print {
   body *{
     visibility: hidden;
