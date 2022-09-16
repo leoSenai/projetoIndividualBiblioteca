@@ -68,8 +68,9 @@ export default function CreateReport(props) {
         // if(anterior != null){
         //     document.body.removeChild(anterior);
         // }
-        let corpo = document.getElementById("toprint")
-        document.getElementById("corpo").innerHTML = "";
+        //let corpo = document.getElementById("toprint")
+        let corpo = document.getElementById("corpo")
+        corpo.innerHTML = "";
 
         //window.print();
         //return false;   

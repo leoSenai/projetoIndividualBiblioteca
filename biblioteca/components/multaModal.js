@@ -57,7 +57,7 @@ export default function MultaModal(props) {
       console.log(msg)
       toastr.error(msg, "Erro")
     } else {
-      toastr.success('Empréstimo executado com sucesso', 'Sucesso')
+      toastr.success('Multa aplicada com sucesso', 'Sucesso')
       props.close();
     }
   }
